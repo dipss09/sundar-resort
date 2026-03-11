@@ -14,6 +14,11 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+
 </head>
 
 <body>
@@ -23,7 +28,9 @@
                 <img src="logo.jpg" alt="Sundar Resort Logo" style="height: 50px;">
             </a>
             <nav class="nav-links">
+                <a href="#about">About</a>
                 <a href="#accommodation">Accommodation</a>
+                <a href="#facilities">Facilities</a>
                 <a href="#leisure">Leisure</a>
                 <a href="#dining">Dining</a>
                 <a href="#events">Events</a>
@@ -92,8 +99,38 @@
             </div>
         </div>
 
+        <section id="about" class="section bg-light">
+            <div class="container auto-grid">
+                <div class="section-text reveal-left">
+                    <span class="section-kicker">About Us</span>
+                    <h2>Serenity in Mother Nature</h2>
+                    <p><strong>Sundar Hotel & Resort</strong> is located in Majhitar, East Sikkim, and we strive to
+                        provide a luxurious stay where you can truly enjoy the serenity of our Mother Nature.</p>
+                    <p>The Resort is targeted to provide a peaceful environmental experience and is equipped with the
+                        latest Infinity Swimming Pool fitted with a state-of-the-art filtration system. For health and
+                        wellness enthusiasts, the Resort provides a Steam Bath, Sauna, as well as a Jacuzzi to relax and
+                        rejuvenate the mind. It is not just for adults; Sundar Spa & Resort also features a Kids Pool
+                        and Multi-Play System for your little ones.</p>
+                    <p>We are approximately 37 Kms from Gangtok and roughly 4 Kms from Rangpo. The closest Railway
+                        station is New Jalpaiguri (85 Kms away), and Bagdogra Airport is 90 Kms. The Resort is a vantage
+                        point for sightseeing travels to Gangtok (37 Kms), Namchi (44 Kms), Kalimpong (39 Kms), and
+                        Darjeeling (61 Kms).</p>
+                </div>
+                <div class="img-wrapper reveal-right" style="position: relative;">
+                    <img src="photo.jpg" alt="Sundar Resort Nature" class="rounded-img shadow-lg"
+                        style="width: 100%; height: 100%; object-fit: cover; min-height: 400px;">
+                    <div class="floating-review-card">
+                        <div class="stars">★★★★½</div>
+                        <div class="rating-number">4.5<span>/5</span></div>
+                        <div class="review-text">"Very Good" - Based on 21 reviews</div>
+                        <div class="ranking-badge">#1 of 1 cottage in Rangpo</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Experience Features -->
-        <section id="accommodation" class="section experience-section bg-light">
+        <section id="accommodation" class="section experience-section">
             <div class="container auto-grid">
                 <div class="section-text reveal-left">
                     <span class="section-kicker">Stay With Us</span>
@@ -105,10 +142,65 @@
                         <li>Mountain View Suites</li>
                         <li>Family Rooms with Balconies</li>
                     </ul>
-                    <a href="tel:07432974293" class="btn btn-secondary mt-4">View Rooms</a>
+                    <button id="openGalleryBtn" class="btn btn-secondary mt-4">View Rooms Gallery</button>
+                    <a href="https://wa.me/917432974293?text=Hello%2C%20I%20would%20like%20to%20book%20a%20stay%20at%20Sundar%20Hotel%20%26%20Resort."
+                        target="_blank" rel="noopener noreferrer" class="btn btn-outline"
+                        style="border-color:#333; color:#333; margin-left: 10px; margin-top: 1.5rem;">Call to Book
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left:5px;">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                            </path>
+                        </svg>
+                    </a>
                 </div>
                 <div class="img-wrapper reveal-right">
                     <img src="photo.jpg" alt="Cottages and resort evening view" class="rounded-img shadow-lg">
+                </div>
+            </div>
+        </section>
+
+        <section id="facilities" class="section bg-light">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <span class="section-kicker">Our Facilities</span>
+                    <h2>Amenities & Features</h2>
+                    <p class="max-w-lg mx-auto">Everything you need for a comfortable and memorable stay in the lap of
+                        nature.</p>
+                </div>
+
+                <div class="cards-grid reveal-up mt-5">
+                    <div class="card glass-card" style="background: white;">
+                        <div class="card-icon">🏨</div>
+                        <h3>Property Amenities</h3>
+                        <ul class="feature-list">
+                            <li>Free parking</li>
+                            <li>Free High Speed Internet (WiFi)</li>
+                            <li>Pool & Children Activities</li>
+                            <li>Free breakfast</li>
+                            <li>Conference facilities</li>
+                            <li>Laundry service</li>
+                        </ul>
+                    </div>
+                    <div class="card glass-card" style="background: white;">
+                        <div class="card-icon">🛏️</div>
+                        <h3>Room Features</h3>
+                        <ul class="feature-list">
+                            <li>Air conditioning</li>
+                            <li>Room service</li>
+                            <li>Minibar</li>
+                            <li>Refrigerator</li>
+                        </ul>
+                    </div>
+                    <div class="card glass-card" style="background: white;">
+                        <div class="card-icon">⭐</div>
+                        <h3>Good to Know</h3>
+                        <p style="margin-bottom: 0.5rem; color: var(--text-main);"><strong>Room types:</strong> Suites
+                        </p>
+                        <p style="margin-bottom: 0.5rem; color: var(--text-main);"><strong>Hotel Style:</strong> Quaint,
+                            Business</p>
+                        <p style="margin-bottom: 0; color: var(--text-main);">Family & Kid Friendly</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -146,10 +238,34 @@
                         the hills.</p>
                     <p>Open for both staying guests and local visitors looking for an excellent midday meal or elegant
                         dinner.</p>
-                    <a href="tel:07432974293" class="btn btn-secondary mt-4">Reserve a Table</a>
+                    <a href="https://wa.me/917432974293?text=Hello%2C%20I%20would%20like%20to%20reserve%20a%20table%20at%20Sundar%20Hotel%20%26%20Resort."
+                        target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-4">Reserve a Table <svg
+                            viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left:5px;">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                            </path>
+                        </svg></a>
                 </div>
                 <div class="img-wrapper reveal-right">
                     <img src="brekfst.jpg" alt="Delicious resort food outdoors" class="rounded-img shadow-lg">
+                    <div style="background: white; padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--primary); margin-top: 1.5rem;">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">Today's Specials</h3>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; border-bottom: 1px dashed #eee; padding-bottom: 0.5rem;">
+                                <span><strong>Local Thali</strong> <small style="color:var(--text-muted);">(Traditional)</small></span>
+                                <span style="color:var(--primary); font-weight:600;">₹450</span>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; border-bottom: 1px dashed #eee; padding-bottom: 0.5rem;">
+                                <span><strong>Woodfire Pizza</strong> <small style="color:var(--text-muted);">(Continental)</small></span>
+                                <span style="color:var(--primary); font-weight:600;">₹600</span>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; border-bottom: 1px dashed #eee; padding-bottom: 0.5rem;">
+                                <span><strong>Fresh Mint Mojito</strong> <small style="color:var(--text-muted);">(Beverage)</small></span>
+                                <span style="color:var(--primary); font-weight:600;">₹250</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -271,6 +387,31 @@
 
     </main>
 
+    <!-- Modal Gallery for Rooms -->
+    <div id="roomGalleryModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeGalleryBtn" class="modal-close">&times;</button>
+            <h3 style="color: white; margin-bottom: 20px; text-align: center; font-size: 2rem;">Our Accommodations</h3>
+            <div class="gallery-carousel">
+                <button class="carousel-btn prev-btn">&#10094;</button>
+                <img id="galleryMainImg" src="room 1.jpg" alt="Room View">
+                <button class="carousel-btn next-btn">&#10095;</button>
+            </div>
+            <div class="gallery-thumbnails">
+                <img src="room 1.jpg" class="thumb active" onclick="setGalleryImage(1)">
+                <img src="room 2.jpg" class="thumb" onclick="setGalleryImage(2)">
+                <img src="room 3.jpg" class="thumb" onclick="setGalleryImage(3)">
+                <img src="room 4.jpg" class="thumb" onclick="setGalleryImage(4)">
+                <img src="room 5.jpg" class="thumb" onclick="setGalleryImage(5)">
+                <img src="room 6.jpg" class="thumb" onclick="setGalleryImage(6)">
+                <img src="room 7.jpg" class="thumb" onclick="setGalleryImage(7)">
+                <img src="room 8.jpg" class="thumb" onclick="setGalleryImage(8)">
+                <img src="room 9.jpg" class="thumb" onclick="setGalleryImage(9)">
+                <img src="room 10.jpg" class="thumb" onclick="setGalleryImage(10)">
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-brand">
@@ -283,7 +424,9 @@
             </div>
             <div class="footer-links">
                 <h4 style="color: white;">Quick Links</h4>
+                <a href="#about">About</a>
                 <a href="#accommodation">Accommodation</a>
+                <a href="#facilities">Facilities</a>
                 <a href="#leisure">Leisure & Pools</a>
                 <a href="#dining">Dining</a>
                 <a href="#events">Events</a>
@@ -301,6 +444,18 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

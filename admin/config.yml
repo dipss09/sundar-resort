@@ -1,0 +1,29 @@
+backend:
+  name: git-gateway
+  branch: main # Branch to update (optional; defaults to master)
+
+# This enables local testing
+local_backend: true
+
+media_folder: "assets/uploads" # Media files will be stored in the repo under assets/uploads
+public_folder: "/assets/uploads" # The src attribute for uploaded media will begin with /assets/uploads
+
+collections:
+  - name: "menu"
+    label: "Today's Specials (Menu)"
+    folder: "content/menu"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Name", name: "title", widget: "string"}
+      - {label: "Category", name: "category", widget: "string", hint: "e.g. Traditional, Continental, Beverage"}
+      - {label: "Price", name: "price", widget: "string", hint: "e.g. ₹450"}
+
+  - name: "gallery"
+    label: "Gallery Photos"
+    folder: "content/gallery"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title / Quote", name: "title", widget: "string", hint: "The text that overlays the photo"}
+      - {label: "Image", name: "image", widget: "image"}
