@@ -106,14 +106,10 @@ function switchTab(tabId) {
 // ──────────────────────────────────────────────
 //  📸 IMAGE COMPRESSION & UPLOAD
 // ──────────────────────────────────────────────
-function compressAndUpload(file, maxWidth = 1200) {
+function compressAndUpload(file, maxWidth = 800) {
   return new Promise((resolve, reject) => {
-    console.log("Starting image compression for:", file.name);
-    const timeoutId = setTimeout(() => reject(new Error('Upload timed out after 15 seconds. Please check your internet connection and Firebase Storage Rules.')), 15000);
+    console.log("Starting image compression to Base64 for:", file.name);
     
-    const resolveWrap = (res) => { clearTimeout(timeoutId); console.log("Upload successful:", res); resolve(res); };
-    const rejectWrap = (err) => { clearTimeout(timeoutId); console.error("Upload failed:", err); reject(err); };
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = event => {
@@ -126,20 +122,26 @@ function compressAndUpload(file, maxWidth = 1200) {
           if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; }
           canvas.width = w; canvas.height = h;
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          canvas.toBlob(blob => {
-            if (!blob) return rejectWrap(new Error('Canvas empty. Image might be corrupted.'));
-            const fileName = 'uploads/' + Date.now() + '_' + Math.random().toString(36).substring(2) + '.jpg';
-            console.log("Uploading blob to Firebase Storage:", fileName);
-            const ref = storage.ref().child(fileName);
-            ref.put(blob).then(snap => snap.ref.getDownloadURL()).then(resolveWrap).catch(err => rejectWrap(new Error('Firebase Storage error: ' + err.message)));
-          }, 'image/jpeg', 0.75);
+          
+          // Convert directly to Base64 with high compression (0.6)
+          const base64String = canvas.toDataURL('image/jpeg', 0.6);
+          
+          // Check size (Firestore limit is 1MB, let's limit to ~800KB)
+          const sizeInBytes = base64String.length * 0.75;
+          if (sizeInBytes > 800000) {
+              return reject(new Error('Image is too complex/large even after compression. Please choose a different image.'));
+          }
+          
+          console.log("Successfully compressed to Base64. Size:", Math.round(sizeInBytes/1024), "KB");
+          resolve(base64String);
+          
         } catch (e) {
-          rejectWrap(new Error('Canvas processing failed: ' + e.message));
+          reject(new Error('Canvas processing failed: ' + e.message));
         }
       };
-      img.onerror = () => rejectWrap(new Error('Image load failed inside browser.'));
+      img.onerror = () => reject(new Error('Image load failed inside browser.'));
     };
-    reader.onerror = () => rejectWrap(new Error('File read failed.'));
+    reader.onerror = () => reject(new Error('File read failed.'));
   });
 }
 
