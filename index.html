@@ -15,13 +15,31 @@
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+    <script>
+      // Firebase Config — UPDATE THESE VALUES!
+      const firebaseConfig = {
+        apiKey: "AIzaSyBWYkuBFcPXZ-bITnXv2fCWTQJKpH_wbYU",
+        authDomain: "sundar-hotel-resort-50dd9.firebaseapp.com",
+        projectId: "sundar-hotel-resort-50dd9",
+        storageBucket: "sundar-hotel-resort-50dd9.appspot.com",
+        messagingSenderId: "412496518341",
+        appId: "1:412496518341:web:acb05a67b6919a0494a4ac",
+        measurementId: "G-7JDW4RMDLV"
+      };
+      try { firebase.initializeApp(firebaseConfig); } catch(e) { console.error("Firebase init:", e); }
+      var db = firebase.firestore();
+    </script>
+
 </head>
 
 <body>
     <header class="header">
         <div class="nav-container">
             <a href="#" class="logo">
-                <img src="logo.jpg" alt="Sundar Resort Logo" style="height: 50px;">
+                <img src="assets/logo.jpg" alt="Sundar Resort Logo" style="height: 50px;">
             </a>
             <nav class="nav-links">
                 <a href="#about">About</a>
@@ -55,12 +73,12 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-bg">
-                <img src="photo.jpg" alt="Sundar Resort Exterior in the mountains" class="parallax-img">
+                <img src="assets/photo.jpg" alt="Sundar Resort Exterior in the mountains" class="parallax-img" id="hero-img">
             </div>
             <div class="hero-content">
                 <span class="badge reveal-up">Majitar, East Sikkim</span>
-                <h1 class="reveal-text">Where Peace Meets <br><span>Tranquillity</span></h1>
-                <p class="hero-subtext reveal-fade">A serene mountain retreat near the gateway of Rangpo. Unwind, dine,
+                <h1 class="reveal-text" id="hero-title">Where Peace Meets <br><span>Tranquillity</span></h1>
+                <p class="hero-subtext reveal-fade" id="hero-subtitle">A serene mountain retreat near the gateway of Rangpo. Unwind, dine,
                     and explore.</p>
                 <div class="hero-cta reveal-fade">
                     <a href="#accommodation" class="btn btn-primary btn-large">Explore Resort</a>
@@ -97,23 +115,17 @@
 
         <section id="about" class="section bg-light">
             <div class="container auto-grid">
-                <div class="section-text reveal-left">
+                <div class="section-text reveal-left" id="about-content">
                     <span class="section-kicker">About Us</span>
-                    <h2>Serenity in Mother Nature</h2>
-                    <p><strong>Sundar Hotel & Resort</strong> is located in Majhitar, East Sikkim, and we strive to
-                        provide a luxurious stay where you can truly enjoy the serenity of our Mother Nature.</p>
-                    <p>The Resort is targeted to provide a peaceful environmental experience and is equipped with the
-                        latest Infinity Swimming Pool fitted with a state-of-the-art filtration system. For health and
-                        wellness enthusiasts, the Resort provides a Steam Bath, Sauna, as well as a Jacuzzi to relax and
-                        rejuvenate the mind. It is not just for adults; Sundar Spa & Resort also features a Kids Pool
-                        and Multi-Play System for your little ones.</p>
-                    <p>We are approximately 37 Kms from Gangtok and roughly 4 Kms from Rangpo. The closest Railway
-                        station is New Jalpaiguri (85 Kms away), and Bagdogra Airport is 90 Kms. The Resort is a vantage
-                        point for sightseeing travels to Gangtok (37 Kms), Namchi (44 Kms), Kalimpong (39 Kms), and
-                        Darjeeling (61 Kms).</p>
+                    <h2 id="about-title">Serenity in Mother Nature</h2>
+                    <div id="about-description">
+                        <p><strong>Sundar Hotel & Resort</strong> is located in Majhitar, East Sikkim, and we strive to
+                            provide a luxurious stay where you can truly enjoy the serenity of our Mother Nature.</p>
+                        <p>Loading about info...</p>
+                    </div>
                 </div>
                 <div class="img-wrapper reveal-right" style="position: relative;">
-                    <img src="photo.jpg" alt="Sundar Resort Nature" class="rounded-img shadow-lg"
+                    <img src="assets/photo.jpg" alt="About Resort" class="rounded-img shadow-lg" id="about-img"
                         style="width: 100%; height: 100%; object-fit: cover; min-height: 400px;">
                     <div class="floating-review-card">
                         <div class="stars">★★★★½</div>
@@ -133,10 +145,8 @@
                     <h2>Comfortable Resort Stays</h2>
                     <p>Designed for relaxation, our rooms, suites, and cottage-style accommodations offer stunning views
                         of lush greenery and majestic mountains. Wake up to fresh air and the sounds of nature.</p>
-                    <ul class="feature-list">
-                        <li>Premium Cottages</li>
-                        <li>Mountain View Suites</li>
-                        <li>Family Rooms with Balconies</li>
+                    <ul class="feature-list" id="rooms-list">
+                        <li>Loading rooms from CMS...</li>
                     </ul>
                     <button id="openGalleryBtn" class="btn btn-secondary mt-4">View Rooms Gallery</button>
                     <a href="https://wa.me/917432974293?text=Hello%2C%20I%20would%20like%20to%20book%20a%20stay%20at%20Sundar%20Hotel%20%26%20Resort."
@@ -151,7 +161,7 @@
                     </a>
                 </div>
                 <div class="img-wrapper reveal-right">
-                    <img src="photo.jpg" alt="Cottages and resort evening view" class="rounded-img shadow-lg">
+                    <img src="assets/photo.jpg" alt="Cottages and resort evening view" class="rounded-img shadow-lg">
                 </div>
             </div>
         </section>
@@ -201,11 +211,25 @@
             </div>
         </section>
 
+        <section id="whats-new" class="section experience-section">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <span class="section-kicker">Latest Additions</span>
+                    <h2>What's New</h2>
+                    <p class="max-w-lg mx-auto">Discover the newest updates, features, and facilities we've added to perfectly tailor your stay.</p>
+                </div>
+
+                <div class="cards-grid reveal-up mt-5" id="facilities-list">
+                    <p style="text-align:center;">Loading latest updates from CMS...</p>
+                </div>
+            </div>
+        </section>
+
         <section id="leisure" class="section experience-section">
             <div class="container auto-grid reverse">
                 <div class="img-wrapper dual-images reveal-left">
-                    <img src="swmming.jpg" alt="Large outdoor swimming pool" class="rounded-img shadow-lg img-1">
-                    <img src="mojito.jpg" alt="Lush green resort gardens" class="rounded-img shadow-lg img-2">
+                    <img src="assets/swmming.jpg" alt="Large outdoor swimming pool" class="rounded-img shadow-lg img-1">
+                    <img src="assets/mojito.jpg" alt="Lush green resort gardens" class="rounded-img shadow-lg img-2">
                 </div>
                 <div class="section-text reveal-right">
                     <span class="section-kicker">Resort Leisure</span>
@@ -228,12 +252,10 @@
             <div class="container auto-grid">
                 <div class="section-text reveal-left">
                     <span class="section-kicker">Culinary Delights</span>
-                    <h2>A Taste of Elegance</h2>
-                    <p>Our in-house restaurant serves freshly prepared meals, delicious snacks, and refreshing
-                        beverages. Enjoy your dining experience indoors or alfresco, surrounded by panoramic views of
-                        the hills.</p>
-                    <p>Open for both staying guests and local visitors looking for an excellent midday meal or elegant
-                        dinner.</p>
+                    <h2 id="dining-title">A Taste of Elegance</h2>
+                    <div id="dining-desc">
+                        <p>Loading dining details...</p>
+                    </div>
                     <a href="https://wa.me/917432974293?text=Hello%2C%20I%20would%20like%20to%20reserve%20a%20table%20at%20Sundar%20Hotel%20%26%20Resort."
                         target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-4">Reserve a Table <svg
                             viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2"
@@ -244,7 +266,7 @@
                         </svg></a>
                 </div>
                 <div class="img-wrapper reveal-right">
-                    <img src="brekfst.jpg" alt="Delicious resort food outdoors" class="rounded-img shadow-lg">
+                    <img src="assets/brekfst.jpg" alt="Delicious resort food" class="rounded-img shadow-lg" id="dining-img">
                     <div style="background: white; padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--primary); margin-top: 1.5rem;">
                         <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">Today's Specials</h3>
                         <ul style="list-style:none; padding:0;">
@@ -266,27 +288,56 @@
             </div>
         </section>
 
-        <section id="events" class="section text-center py-large" style="background-color: white;">
+        <section id="offers" class="section text-center py-large" style="background-color: white;">
             <div class="container">
-                <span class="section-kicker">Events & Gatherings</span>
-                <h2 class="max-w-md mx-auto">Celebrate life's special moments with us</h2>
-                <p class="max-w-lg mx-auto mb-5">From family functions and small celebrations to private gatherings and
-                    business meetings, our halls and event-friendly spaces provide the perfect backdrop.</p>
-                <div class="cards-grid reveal-up">
-                    <div class="card glass-card">
-                        <div class="card-icon">🎉</div>
-                        <h3>Celebrations</h3>
-                        <p>Perfect for birthdays, anniversaries, and family reunions in a scenic setting.</p>
+                <span class="section-kicker">Special Offers</span>
+                <h2 class="max-w-md mx-auto">Discover our exclusive packages</h2>
+                <div class="cards-grid reveal-up mt-5" id="offers-list">
+                    <p>Loading offers from CMS...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="section bg-light py-large">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <span class="section-kicker">Guest Experiences</span>
+                    <h2>What Our Guests Say</h2>
+                    <p class="max-w-lg mx-auto">Read honest reviews from visitors who have enjoyed the serenity of Sundar Resort.</p>
+                </div>
+
+                <div class="review-layout reveal-up mt-5">
+                    <div class="review-list-container">
+                        <div class="review-grid" id="reviews-list">
+                            <p>Loading reviews...</p>
+                        </div>
                     </div>
-                    <div class="card glass-card">
-                        <div class="card-icon">💼</div>
-                        <h3>Meetings</h3>
-                        <p>Well-equipped halls for corporate retreats, meetings, and team-building stays.</p>
-                    </div>
-                    <div class="card glass-card">
-                        <div class="card-icon">☀️</div>
-                        <h3>Day Visits</h3>
-                        <p>Join us for a relaxing day outing, pool access, and weekend escapes.</p>
+                    
+                    <div class="review-form-container glass-card shadow-lg" style="background: white; padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">Leave a Review</h3>
+                        <form id="review-form">
+                            <div class="form-group">
+                                <label for="reviewer-name">Your Name</label>
+                                <input type="text" id="reviewer-name" class="form-control" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Rating</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars">★</label>
+                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">★</label>
+                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">★</label>
+                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">★</label>
+                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">★</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="review-content">Your Review</label>
+                                <textarea id="review-content" class="form-control" rows="4" required placeholder="Tell us about your stay..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Review</button>
+                            <p id="review-submit-msg" style="display:none; margin-top: 1rem; font-weight: 500; text-align: center; color: var(--primary);"></p>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -304,40 +355,40 @@
 
                 <div class="gallery-grid">
                     <div class="gallery-card reveal-up">
-                        <img src="luxous.jpg" alt="Luxurious stay" class="gallery-img">
+                        <img src="assets/luxous.jpg" alt="Luxurious stay" class="gallery-img">
                         <div class="gallery-content">
                             <p class="gallery-quote">"Find luxury in every detail, surrounded by the majesty of the
                                 mountains."</p>
                         </div>
                     </div>
                     <div class="gallery-card reveal-up" style="animation-delay: 0.1s;">
-                        <img src="cotage.jpg" alt="Premium cottage" class="gallery-img">
+                        <img src="assets/cotage.jpg" alt="Premium cottage" class="gallery-img">
                         <div class="gallery-content">
                             <p class="gallery-quote">"Wake up directly to the serene sights and sounds of pure nature."
                             </p>
                         </div>
                     </div>
                     <div class="gallery-card reveal-up" style="animation-delay: 0.2s;">
-                        <img src="lunch.jpg" alt="Delicious lunch" class="gallery-img">
+                        <img src="assets/lunch.jpg" alt="Delicious lunch" class="gallery-img">
                         <div class="gallery-content">
                             <p class="gallery-quote">"Culinary excellence paired with panoramic, open-air views."</p>
                         </div>
                     </div>
                     <div class="gallery-card reveal-up" style="animation-delay: 0.1s;">
-                        <img src="drinks.jpg" alt="Refreshing drinks" class="gallery-img">
+                        <img src="assets/drinks.jpg" alt="Refreshing drinks" class="gallery-img">
                         <div class="gallery-content">
                             <p class="gallery-quote">"Refresh, unwind, and let time slow down by the calm waters."</p>
                         </div>
                     </div>
                     <div class="gallery-card reveal-up" style="animation-delay: 0.2s;">
-                        <img src="thimgs that celebrate.jpg" alt="Celebration setup" class="gallery-img">
+                        <img src="assets/thimgs that celebrate.jpg" alt="Celebration setup" class="gallery-img">
                         <div class="gallery-content">
                             <p class="gallery-quote">"Magical spaces designed to make every celebration truly
                                 unforgettable."</p>
                         </div>
                     </div>
                     <div class="gallery-card reveal-up" style="animation-delay: 0.3s;">
-                        <img src="organised any celebration.jpg" alt="Organised celebration" class="gallery-img">
+                        <img src="assets/organised any celebration.jpg" alt="Organised celebration" class="gallery-img">
                         <div class="gallery-content">
                             <p class="gallery-quote">"Flawless execution for events that echo with laughter and joy."
                             </p>
@@ -390,20 +441,20 @@
             <h3 style="color: white; margin-bottom: 20px; text-align: center; font-size: 2rem;">Our Accommodations</h3>
             <div class="gallery-carousel">
                 <button class="carousel-btn prev-btn">&#10094;</button>
-                <img id="galleryMainImg" src="room 1.jpg" alt="Room View">
+                <img id="galleryMainImg" src="assets/room 1.jpg" alt="Room View">
                 <button class="carousel-btn next-btn">&#10095;</button>
             </div>
             <div class="gallery-thumbnails">
-                <img src="room 1.jpg" class="thumb active" onclick="setGalleryImage(1)">
-                <img src="room 2.jpg" class="thumb" onclick="setGalleryImage(2)">
-                <img src="room 3.jpg" class="thumb" onclick="setGalleryImage(3)">
-                <img src="room 4.jpg" class="thumb" onclick="setGalleryImage(4)">
-                <img src="room 5.jpg" class="thumb" onclick="setGalleryImage(5)">
-                <img src="room 6.jpg" class="thumb" onclick="setGalleryImage(6)">
-                <img src="room 7.jpg" class="thumb" onclick="setGalleryImage(7)">
-                <img src="room 8.jpg" class="thumb" onclick="setGalleryImage(8)">
-                <img src="room 9.jpg" class="thumb" onclick="setGalleryImage(9)">
-                <img src="room 10.jpg" class="thumb" onclick="setGalleryImage(10)">
+                <img src="assets/room 1.jpg" class="thumb active" onclick="setGalleryImage(1)">
+                <img src="assets/room 2.jpg" class="thumb" onclick="setGalleryImage(2)">
+                <img src="assets/room 3.jpg" class="thumb" onclick="setGalleryImage(3)">
+                <img src="assets/room 4.jpg" class="thumb" onclick="setGalleryImage(4)">
+                <img src="assets/room 5.jpg" class="thumb" onclick="setGalleryImage(5)">
+                <img src="assets/room 6.jpg" class="thumb" onclick="setGalleryImage(6)">
+                <img src="assets/room 7.jpg" class="thumb" onclick="setGalleryImage(7)">
+                <img src="assets/room 8.jpg" class="thumb" onclick="setGalleryImage(8)">
+                <img src="assets/room 9.jpg" class="thumb" onclick="setGalleryImage(9)">
+                <img src="assets/room 10.jpg" class="thumb" onclick="setGalleryImage(10)">
             </div>
         </div>
     </div>
@@ -413,7 +464,7 @@
             <div class="footer-brand">
                 <a href="#" class="logo text-white"
                     style="display:inline-block; padding: 10px; background-color: white; border-radius: 8px;">
-                    <img src="logo.jpg" alt="Sundar Resort Logo" style="height: 50px;">
+                    <img src="assets/logo.jpg" alt="Sundar Resort Logo" style="height: 50px;">
                 </a>
                 <p style="color: #999; margin-top: 1rem;">Where Peace Meets Tranquillity. An unforgettable escape into
                     nature.</p>
@@ -426,6 +477,7 @@
                 <a href="#leisure">Leisure & Pools</a>
                 <a href="#dining">Dining</a>
                 <a href="#events">Events</a>
+                <a href="admin.html" style="opacity: 0.5; margin-top: 1rem; display: inline-block;">🔒 Admin Panel</a>
             </div>
             <div class="footer-social">
                 <h4 style="color: white;">Connect With Us</h4>
@@ -435,7 +487,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Sundar Hotel & Resort. All rights reserved.</p>
+            <p>&copy; 2024 Sundar Hotel &amp; Resort. All rights reserved.</p>
         </div>
     </footer>
 
