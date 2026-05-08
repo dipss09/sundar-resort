@@ -481,17 +481,28 @@ document.getElementById("gallery-form").addEventListener("submit", async e => {
   e.preventDefault();
   const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
   try {
-    const payload = { quote: document.getElementById('gal-quote').value };
-    const file = document.getElementById('gal-img').files[0];
-    if (!file) throw new Error("Image is required for gallery.");
+    const files = document.getElementById('gal-img').files;
+    if (files.length === 0) throw new Error("Image is required for gallery.");
+    
     document.getElementById('gal-upload-progress').classList.remove('hidden');
-    payload.image = await compressAndUpload(file);
+    
+    const quote = document.getElementById('gal-quote').value;
+    const uploadPromises = Array.from(files).map(async (file) => {
+      const base64Img = await compressAndUpload(file);
+      const payload = {
+        quote: quote, // Will be empty if not provided, which is fine for bulk
+        image: base64Img,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      return db.collection('gallery').add(payload);
+    });
+
+    await Promise.all(uploadPromises);
+    
     document.getElementById('gal-upload-progress').classList.add('hidden');
-    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('gallery').add(payload);
     document.getElementById("gal-msg").classList.remove("hidden");
     setTimeout(() => { document.getElementById("gal-msg").classList.add("hidden"); closeGalleryModal(); }, 1500);
-  } catch (err) { console.error(err); alert("Error saving: " + (err.message || err)); } finally { btn.disabled = false; }
+  } catch (err) { console.error(err); alert("Error saving: " + (err.message || err)); } finally { btn.disabled = false; document.getElementById('gal-upload-progress').classList.add('hidden'); }
 });
 
 // ──────────────────────────────────────────────
@@ -511,7 +522,50 @@ function loadExtras() {
     document.getElementById("loc-checkin").value = d.checkin || '';
     document.getElementById("loc-checkout").value = d.checkout || '';
   });
+  db.collection("siteContent").doc("headers").onSnapshot(doc => {
+    if(!doc.exists) return; const d = doc.data();
+    if(d.acc) {
+      document.getElementById("head-acc-kicker").value = d.acc.kicker || '';
+      document.getElementById("head-acc-title").value = d.acc.title || '';
+      document.getElementById("head-acc-desc").value = d.acc.desc || '';
+    }
+    if(d.fac) {
+      document.getElementById("head-fac-kicker").value = d.fac.kicker || '';
+      document.getElementById("head-fac-title").value = d.fac.title || '';
+      document.getElementById("head-fac-desc").value = d.fac.desc || '';
+    }
+    if(d.menu) {
+      document.getElementById("head-menu-kicker").value = d.menu.kicker || '';
+      document.getElementById("head-menu-title").value = d.menu.title || '';
+      document.getElementById("head-menu-desc").value = d.menu.desc || '';
+    }
+  });
 }
+
+document.getElementById("headers-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    await db.collection("siteContent").doc("headers").set({
+      acc: {
+        kicker: document.getElementById("head-acc-kicker").value,
+        title: document.getElementById("head-acc-title").value,
+        desc: document.getElementById("head-acc-desc").value
+      },
+      fac: {
+        kicker: document.getElementById("head-fac-kicker").value,
+        title: document.getElementById("head-fac-title").value,
+        desc: document.getElementById("head-fac-desc").value
+      },
+      menu: {
+        kicker: document.getElementById("head-menu-kicker").value,
+        title: document.getElementById("head-menu-title").value,
+        desc: document.getElementById("head-menu-desc").value
+      }
+    }, {merge:true});
+    showMsg("headers-msg");
+  } catch (err) { console.error(err); alert("Error: " + err.message); } finally { btn.disabled = false; }
+});
 
 document.getElementById("trust-form").addEventListener("submit", async e => {
   e.preventDefault();
@@ -603,5 +657,29 @@ document.getElementById("settings-form").addEventListener("submit", async e => {
     alert("Error saving: " + (err.message || err));
   } finally {
     btn.disabled = false;
+  }
+});
+
+document.getElementById("logo-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    const file = document.getElementById("set-logo-input").files[0];
+    if (!file) throw new Error("Please select an image file for the logo.");
+    
+    document.getElementById('logo-upload-progress').classList.remove('hidden');
+    const base64Img = await compressAndUpload(file);
+    await db.collection("siteContent").doc("settings").set({ logoUrl: base64Img }, {merge:true});
+    document.getElementById('logo-upload-progress').classList.add('hidden');
+    
+    showMsg("logo-msg");
+    document.getElementById("set-logo-input").value = '';
+    document.getElementById("set-logo-preview").innerHTML = '<img src="'+base64Img+'" class="h-12 object-contain bg-black rounded p-2 mt-2">';
+  } catch (err) {
+    console.error(err);
+    alert("Error saving logo: " + (err.message || err));
+  } finally {
+    btn.disabled = false;
+    document.getElementById('logo-upload-progress').classList.add('hidden');
   }
 });

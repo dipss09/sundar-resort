@@ -144,7 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = doc.data();
             if (data.heroTitle) document.getElementById('hero-title').innerHTML = data.heroTitle;
             if (data.heroSubtitle) document.getElementById('hero-subtitle').innerHTML = data.heroSubtitle;
-            if (data.heroImage) document.getElementById('hero-img').src = data.heroImage;
+            if (data.heroImage) {
+                const img = document.getElementById('hero-img');
+                img.src = data.heroImage;
+                img.style.opacity = '1';
+            }
         }
     }, err => console.log('Hero fetch:', err));
 
@@ -154,7 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = doc.data();
             if (data.title) document.getElementById('about-title').innerHTML = data.title;
             if (data.description) document.getElementById('about-description').innerHTML = data.description;
-            if (data.image) document.getElementById('about-img').src = data.image;
+            if (data.image) {
+                const img = document.getElementById('about-img');
+                img.src = data.image;
+                img.style.opacity = '1';
+            }
         }
     }, err => console.log('About fetch:', err));
 
@@ -278,7 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = doc.data();
             if (data.title) document.getElementById('dining-title').innerHTML = data.title;
             if (data.description) document.getElementById('dining-desc').innerHTML = data.description;
-            if (data.image) document.getElementById('dining-img').src = data.image;
+            if (data.image) {
+                const img = document.getElementById('dining-img');
+                img.src = data.image;
+                img.style.opacity = '1';
+            }
         }
     }, err => console.log('Dining fetch:', err));
 
@@ -455,6 +467,12 @@ document.addEventListener('DOMContentLoaded', () => {
     db.collection("siteContent").doc("settings").onSnapshot(doc => {
         if(doc.exists) {
             const d = doc.data();
+            // Update Logos
+            if (d.logoUrl) {
+                const navLogo = document.getElementById('nav-logo'); if (navLogo) navLogo.src = d.logoUrl;
+                const ftLogo = document.getElementById('footer-logo'); if (ftLogo) ftLogo.src = d.logoUrl;
+            }
+            
             // Try to find the footer icons
             const socialLinks = document.querySelectorAll('.social-links a');
             socialLinks.forEach(link => {
@@ -464,6 +482,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const ftPhone = document.getElementById('ft-phone'); if(ftPhone && d.phone) ftPhone.textContent = `📞 ${d.phone}`;
             const mapBtn = document.getElementById('btn-directions'); if(mapBtn && d.mapsUrl) mapBtn.href = d.mapsUrl;
+        }
+    });
+
+    db.collection("siteContent").doc("headers").onSnapshot(doc => {
+        if(doc.exists) {
+            const d = doc.data();
+            if (d.acc) {
+                const k = document.getElementById('acc-kicker'); if(k && d.acc.kicker) k.textContent = d.acc.kicker;
+                const t = document.getElementById('acc-title'); if(t && d.acc.title) t.textContent = d.acc.title;
+                const desc = document.getElementById('acc-desc'); if(desc && d.acc.desc) desc.textContent = d.acc.desc;
+            }
+            if (d.fac) {
+                const k = document.getElementById('fac-kicker'); if(k && d.fac.kicker) k.textContent = d.fac.kicker;
+                const t = document.getElementById('fac-title'); if(t && d.fac.title) t.textContent = d.fac.title;
+                const desc = document.getElementById('fac-desc'); if(desc && d.fac.desc) desc.textContent = d.fac.desc;
+            }
+            if (d.menu) {
+                const k = document.getElementById('menu-kicker'); if(k && d.menu.kicker) k.textContent = d.menu.kicker;
+                const t = document.getElementById('menu-title'); if(t && d.menu.title) t.textContent = d.menu.title;
+                const desc = document.getElementById('menu-desc'); if(desc && d.menu.desc) desc.textContent = d.menu.desc;
+            }
         }
     });
 

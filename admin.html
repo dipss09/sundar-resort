@@ -274,9 +274,9 @@
             <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold text-primary" id="gallery-modal-title">Add Photo</h3><button onclick="closeGalleryModal()" class="text-on-surface-variant hover:text-primary p-2"><span class="material-symbols-outlined">close</span></button></div>
             <form id="gallery-form" class="space-y-4">
               <input type="hidden" id="gal-id"/>
-              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Quote/Caption</label><input type="text" id="gal-quote" required class="w-full bg-white rounded-xl p-3 border border-outline/20"></div>
-              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Image</label><input type="file" id="gal-img" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20"><input type="hidden" id="gal-img-url"><div id="gal-img-preview" class="mt-2"></div></div>
-              <div id="gal-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Quote/Caption (Optional for bulk uploads)</label><input type="text" id="gal-quote" class="w-full bg-white rounded-xl p-3 border border-outline/20"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Image(s)</label><input type="file" id="gal-img" accept="image/*" multiple class="w-full bg-white rounded-xl p-3 border border-outline/20"><input type="hidden" id="gal-img-url"><div id="gal-img-preview" class="mt-2"></div></div>
+              <div id="gal-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image(s)... Please wait.</div>
               <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark"><span class="material-symbols-outlined">save</span> Save Photo</button>
               <div id="gal-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
             </form>
@@ -289,6 +289,41 @@
         <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">Extra Sections</h2>
         <p class="text-sm text-on-surface-variant mb-6">Manage static text sections across the site.</p>
         
+        <!-- Section Headers Form -->
+        <form id="headers-form" class="space-y-6 glass-card p-6 rounded-2xl mb-6">
+          <h3 class="text-lg font-bold text-primary border-b border-outline/20 pb-2 mb-4">Section Headers</h3>
+          
+          <div class="space-y-3">
+            <h4 class="font-bold text-sm text-on-surface-variant">Accommodation Section</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Kicker (Small Text)</label><input type="text" id="head-acc-kicker" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Stay With Us"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Title (Main Heading)</label><input type="text" id="head-acc-title" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Comfortable Resort Stays"></div>
+            </div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Description</label><textarea id="head-acc-desc" rows="2" class="w-full bg-white rounded-xl p-3 border border-outline/20"></textarea></div>
+          </div>
+          
+          <div class="space-y-3 pt-4 border-t border-outline/10">
+            <h4 class="font-bold text-sm text-on-surface-variant">Facilities Section</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Kicker</label><input type="text" id="head-fac-kicker" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Our Facilities"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Title</label><input type="text" id="head-fac-title" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Amenities & Features"></div>
+            </div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Description</label><textarea id="head-fac-desc" rows="2" class="w-full bg-white rounded-xl p-3 border border-outline/20"></textarea></div>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-outline/10">
+            <h4 class="font-bold text-sm text-on-surface-variant">Menu Section</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Kicker</label><input type="text" id="head-menu-kicker" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Our Menu"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Title</label><input type="text" id="head-menu-title" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="A La Carte"></div>
+            </div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Description</label><textarea id="head-menu-desc" rows="2" class="w-full bg-white rounded-xl p-3 border border-outline/20"></textarea></div>
+          </div>
+
+          <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Save Headers</button>
+          <div id="headers-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+        </form>
+
         <!-- Trust Banner Form -->
         <form id="trust-form" class="space-y-4 glass-card p-6 rounded-2xl mb-6">
           <h3 class="text-lg font-bold text-primary border-b border-outline/20 pb-2 mb-4">Trust Banner (Ratings)</h3>
@@ -324,6 +359,18 @@
       <!-- SETTINGS TAB -->
       <section id="tab-settings" class="tab-pane hidden max-w-3xl">
         <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6">Settings</h2>
+        
+        <!-- Logo Form -->
+        <form id="logo-form" class="space-y-4 glass-card p-6 rounded-2xl mb-6">
+          <h4 class="font-bold text-primary border-b border-outline/20 pb-2 mb-4">Website Logo</h4>
+          <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Upload New Logo (replaces top & footer logo)</label>
+            <input type="file" id="set-logo-input" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
+            <div id="set-logo-preview" class="mt-2"></div></div>
+          <div id="logo-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading logo... Please wait.</div>
+          <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Update Logo</button>
+          <div id="logo-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Logo updated!</div>
+        </form>
+
         <form id="settings-form" class="space-y-6 glass-card p-6 rounded-2xl">
           <div class="space-y-4">
             <h4 class="font-bold text-primary">Contact Information</h4>
