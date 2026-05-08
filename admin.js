@@ -67,7 +67,8 @@ auth.onAuthStateChanged(async (user) => {
 
     if (!adminLoaded) {
       loadHero(); loadAbout(); loadRooms(); loadServices();
-      loadOffers(); loadDining(); loadReviews(); loadSettings();
+      loadOffers(); loadMenu(); loadGallery(); loadExtras();
+      loadDining(); loadReviews(); loadSettings();
       adminLoaded = true;
     }
   } else {
@@ -92,7 +93,7 @@ document.getElementById("logout-btn").addEventListener("click", () => auth.signO
 //  👉 TAB NAVIGATION
 // ──────────────────────────────────────────────
 function switchTab(tabId) {
-  const tabs = ['hero','about','rooms','services','offers','dining','reviews','settings'];
+  const tabs = ['hero','about','rooms','services','offers','menu','gallery','extras','dining','reviews','settings'];
   tabs.forEach(t => {
     document.getElementById('tab-'+t).classList.add('hidden');
     const btn = document.getElementById('tab-btn-'+t);
@@ -374,6 +375,55 @@ document.getElementById("offer-form").addEventListener("submit", async e => {
 });
 
 // ──────────────────────────────────────────────
+//  📜 MENU CRUD
+// ──────────────────────────────────────────────
+let currentMenu = [];
+function loadMenu() {
+  db.collection("restaurantMenu").orderBy("createdAt","desc").onSnapshot(snap => {
+    const grid = document.getElementById("menu-grid");
+    currentMenu = []; let html = '';
+    snap.forEach(doc => { const p = doc.data(); p.id = doc.id; currentMenu.push(p);
+      html += `<div class="glass-card p-0 rounded-2xl overflow-hidden bg-white flex flex-col h-full">
+        ${p.image ? '<img src="'+p.image+'" class="w-full h-40 object-cover">' : '<div class="w-full h-40 bg-surface-container flex items-center justify-center text-3xl">🍲</div>'}
+        <div class="p-5 flex-1 flex flex-col"><span class="text-[10px] font-bold text-primary-light uppercase tracking-widest mb-1">${p.category||'Uncategorized'}</span>
+        <h4 class="font-bold text-primary mb-1">${p.name||'Untitled'}</h4>
+        <p class="text-xs text-on-surface-variant line-clamp-2 flex-1">${p.description||''}</p>
+        <div class="mt-2 text-primary font-bold">${p.price||''}</div>
+        <div class="flex gap-2 mt-4"><button onclick="editMenu('${doc.id}')" class="flex-1 py-2 text-xs font-bold bg-surface-container-high rounded border hover:bg-surface-container-highest text-primary">Edit</button>
+        <button onclick="deleteMenu('${doc.id}')" class="flex-1 py-2 text-xs font-bold bg-red-50 text-red-600 rounded border border-red-100 hover:bg-red-100">Delete</button></div></div></div>`;
+    });
+    grid.innerHTML = html || '<div class="p-8 text-center text-on-surface-variant col-span-full">No menu items yet.</div>';
+  });
+}
+window.openMenuModal = function(){ closeMenuModal(); document.getElementById('menu-modal').classList.remove('hidden'); };
+window.closeMenuModal = function(){ document.getElementById('menu-modal').classList.add('hidden'); document.getElementById('menu-form').reset(); document.getElementById('menu-id').value=''; document.getElementById('menu-img-url').value=''; document.getElementById('menu-img-preview').innerHTML=''; document.getElementById('menu-modal-title').textContent='Add Menu Item'; };
+window.editMenu = function(id) {
+  const m = currentMenu.find(x=>x.id===id); if(!m) return;
+  document.getElementById('menu-id').value=m.id; document.getElementById('menu-category').value=m.category||'';
+  document.getElementById('menu-name').value=m.name||''; document.getElementById('menu-desc').value=m.description||'';
+  document.getElementById('menu-price').value=m.price||''; document.getElementById('menu-img-url').value=m.image||'';
+  if(m.image) document.getElementById('menu-img-preview').innerHTML='<img src="'+m.image+'" class="w-24 h-16 object-cover rounded border">';
+  document.getElementById('menu-modal-title').textContent='Edit Menu Item';
+  document.getElementById('menu-modal').classList.remove('hidden');
+};
+window.deleteMenu = function(id) { if(confirm('Delete this menu item?')) db.collection('restaurantMenu').doc(id).delete(); };
+document.getElementById("menu-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    const id = document.getElementById('menu-id').value;
+    const payload = { category: document.getElementById('menu-category').value, name: document.getElementById('menu-name').value, description: document.getElementById('menu-desc').value, price: document.getElementById('menu-price').value };
+    const file = document.getElementById('menu-img').files[0];
+    if (file) { document.getElementById('menu-upload-progress').classList.remove('hidden'); payload.image = await compressAndUpload(file); document.getElementById('menu-upload-progress').classList.add('hidden'); }
+    else { const old = document.getElementById('menu-img-url').value; if(old) payload.image = old; }
+    if (id) await db.collection('restaurantMenu').doc(id).update(payload);
+    else { payload.createdAt = firebase.firestore.FieldValue.serverTimestamp(); await db.collection('restaurantMenu').add(payload); }
+    document.getElementById("menu-msg").classList.remove("hidden");
+    setTimeout(() => { document.getElementById("menu-msg").classList.add("hidden"); closeMenuModal(); }, 1500);
+  } catch (err) { console.error(err); alert("Error saving: " + (err.message || err)); } finally { btn.disabled = false; }
+});
+
+// ──────────────────────────────────────────────
 //  🍽️ DINING
 // ──────────────────────────────────────────────
 function loadDining() {
@@ -405,6 +455,89 @@ document.getElementById("dining-form").addEventListener("submit", async e => {
   } finally {
     btn.disabled = false;
   }
+});
+
+// ──────────────────────────────────────────────
+//  🖼️ GALLERY CRUD
+// ──────────────────────────────────────────────
+function loadGallery() {
+  db.collection("gallery").orderBy("createdAt","desc").onSnapshot(snap => {
+    const grid = document.getElementById("gallery-grid");
+    let html = '';
+    snap.forEach(doc => { const p = doc.data();
+      html += `<div class="glass-card p-0 rounded-2xl overflow-hidden bg-white flex flex-col">
+        ${p.image ? '<img src="'+p.image+'" class="w-full h-48 object-cover">' : ''}
+        <div class="p-4 flex-1 flex flex-col justify-between">
+        <p class="text-xs text-on-surface-variant italic mb-2">"${p.quote||''}"</p>
+        <button onclick="deleteGallery('${doc.id}')" class="w-full py-2 text-xs font-bold bg-red-50 text-red-600 rounded border border-red-100 hover:bg-red-100">Delete Photo</button></div></div>`;
+    });
+    grid.innerHTML = html || '<div class="p-8 text-center text-on-surface-variant col-span-full">No gallery images yet.</div>';
+  });
+}
+window.openGalleryModal = function(){ closeGalleryModal(); document.getElementById('gallery-modal').classList.remove('hidden'); };
+window.closeGalleryModal = function(){ document.getElementById('gallery-modal').classList.add('hidden'); document.getElementById('gallery-form').reset(); document.getElementById('gal-img-preview').innerHTML=''; };
+window.deleteGallery = function(id) { if(confirm('Delete this photo?')) db.collection('gallery').doc(id).delete(); };
+document.getElementById("gallery-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    const payload = { quote: document.getElementById('gal-quote').value };
+    const file = document.getElementById('gal-img').files[0];
+    if (!file) throw new Error("Image is required for gallery.");
+    document.getElementById('gal-upload-progress').classList.remove('hidden');
+    payload.image = await compressAndUpload(file);
+    document.getElementById('gal-upload-progress').classList.add('hidden');
+    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('gallery').add(payload);
+    document.getElementById("gal-msg").classList.remove("hidden");
+    setTimeout(() => { document.getElementById("gal-msg").classList.add("hidden"); closeGalleryModal(); }, 1500);
+  } catch (err) { console.error(err); alert("Error saving: " + (err.message || err)); } finally { btn.disabled = false; }
+});
+
+// ──────────────────────────────────────────────
+//  ✨ EXTRA SECTIONS (Trust Banner, Location, etc.)
+// ──────────────────────────────────────────────
+function loadExtras() {
+  db.collection("siteContent").doc("trustBanner").onSnapshot(doc => {
+    if(!doc.exists) return; const d = doc.data();
+    document.getElementById("trust-google").value = d.googleText || '';
+    document.getElementById("trust-google-sub").value = d.googleSub || '';
+    document.getElementById("trust-trip").value = d.tripText || '';
+    document.getElementById("trust-trip-sub").value = d.tripSub || '';
+  });
+  db.collection("siteContent").doc("location").onSnapshot(doc => {
+    if(!doc.exists) return; const d = doc.data();
+    document.getElementById("loc-address").value = d.address || '';
+    document.getElementById("loc-checkin").value = d.checkin || '';
+    document.getElementById("loc-checkout").value = d.checkout || '';
+  });
+}
+
+document.getElementById("trust-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    await db.collection("siteContent").doc("trustBanner").set({
+      googleText: document.getElementById("trust-google").value,
+      googleSub: document.getElementById("trust-google-sub").value,
+      tripText: document.getElementById("trust-trip").value,
+      tripSub: document.getElementById("trust-trip-sub").value
+    }, {merge:true});
+    showMsg("trust-msg");
+  } catch (err) { console.error(err); alert("Error: " + err.message); } finally { btn.disabled = false; }
+});
+
+document.getElementById("location-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    await db.collection("siteContent").doc("location").set({
+      address: document.getElementById("loc-address").value,
+      checkin: document.getElementById("loc-checkin").value,
+      checkout: document.getElementById("loc-checkout").value
+    }, {merge:true});
+    showMsg("loc-msg");
+  } catch (err) { console.error(err); alert("Error: " + err.message); } finally { btn.disabled = false; }
 });
 
 // ──────────────────────────────────────────────
@@ -444,6 +577,7 @@ function loadSettings() {
     document.getElementById("set-whatsapp").value = d.whatsapp || '';
     document.getElementById("set-phone").value = d.phone || '';
     document.getElementById("set-instagram").value = d.instagram || '';
+    document.getElementById("set-facebook").value = d.facebook || '';
     document.getElementById("set-maps").value = d.mapsUrl || '';
     document.getElementById("set-admin-emails").value = (d.adminEmails || ADMIN_EMAILS).join('\n');
   });
@@ -457,6 +591,7 @@ document.getElementById("settings-form").addEventListener("submit", async e => {
       whatsapp: document.getElementById("set-whatsapp").value,
       phone: document.getElementById("set-phone").value,
       instagram: document.getElementById("set-instagram").value,
+      facebook: document.getElementById("set-facebook").value,
       mapsUrl: document.getElementById("set-maps").value,
       adminEmails: emails.length ? emails : ADMIN_EMAILS
     };

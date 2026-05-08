@@ -47,6 +47,7 @@
                 <a href="#facilities">Facilities</a>
                 <a href="#leisure">Leisure</a>
                 <a href="#dining">Dining</a>
+                <a href="#restaurant-menu">Menu</a>
                 <a href="#events">Events</a>
                 <a href="#gallery">Gallery</a>
                 <a href="#location">Location</a>
@@ -100,11 +101,11 @@
         <div class="trust-banner reveal-up">
             <div class="trust-item">
                 <div class="stars">★★★★☆</div>
-                <div class="trust-text"><strong>4.0 Google Rating</strong><br><span>Based on 800+ reviews</span></div>
+                <div class="trust-text"><strong id="trust-google-text">4.0 Google Rating</strong><br><span id="trust-google-sub">Based on 800+ reviews</span></div>
             </div>
             <div class="trust-item">
                 <div class="stars">★★★★½</div>
-                <div class="trust-text"><strong>4.5 TripAdvisor</strong><br><span>Traveler's Choice</span></div>
+                <div class="trust-text"><strong id="trust-trip-text">4.5 TripAdvisor</strong><br><span id="trust-trip-sub">Traveler's Choice</span></div>
             </div>
             <div class="trust-item">
                 <div class="icon">📍</div>
@@ -288,7 +289,21 @@
             </div>
         </section>
 
-        <section id="offers" class="section text-center py-large" style="background-color: white;">
+        <!-- Restaurant Menu Section -->
+        <section id="restaurant-menu" class="section py-large" style="background-color: var(--bg-white);">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <span class="section-kicker">Our Menu</span>
+                    <h2>A La Carte</h2>
+                    <p class="max-w-lg mx-auto mb-5">Explore our chef's curated selections of local and international cuisines.</p>
+                </div>
+                <div class="menu-paper reveal-up" id="menu-container">
+                    <p style="text-align: center; color: var(--text-muted); font-style: italic;">Loading our delicious menu...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="offers" class="section text-center py-large" style="background-color: var(--bg-light);">
             <div class="container">
                 <span class="section-kicker">Special Offers</span>
                 <h2 class="max-w-md mx-auto">Discover our exclusive packages</h2>
@@ -407,17 +422,17 @@
                         perfect stopover for travelers heading toward Gangtok or exploring the beautiful landscapes of
                         Sikkim.</p>
                     <div class="contact-info mt-4 pb-4">
-                        <p style="color: #ccc;">📍 <strong>Address:</strong> Majitar, Sikkim, Majhitar, Sikkim 737136
+                        <p style="color: #ccc;">📍 <strong>Address:</strong> <span id="loc-addr">Majitar, Sikkim, Majhitar, Sikkim 737136</span>
                         </p>
-                        <p style="color: #ccc;">📞 <strong>Phone:</strong> <a href="tel:07432974293"
+                        <p style="color: #ccc;" id="ft-phone">📞 <a href="tel:07432974293"
                                 class="text-white">074329 74293</a></p>
-                        <p style="color: #ccc; margin-top: 0.5rem;">🕒 <strong>Check-in:</strong> 12:00 pm |
-                            <strong>Check-out:</strong> 12:00 pm
+                        <p style="color: #ccc; margin-top: 0.5rem;"><span id="loc-cin"><strong>Check-in:</strong> 12:00 pm</span> |
+                            <span id="loc-cout"><strong>Check-out:</strong> 12:00 pm</span>
                         </p>
                     </div>
                     <div class="mt-5 pt-4">
                         <a href="https://maps.google.com/?q=Sundar+Hotel+and+Resort+Majitar+Sikkim" target="_blank"
-                            class="btn btn-primary">Get Directions</a>
+                            class="btn btn-primary" id="btn-directions">Get Directions</a>
                         <a href="https://instagram.com/sundarhotelandresort" target="_blank" class="btn btn-outline"
                             style="margin-left: 10px;">Instagram Gallery</a>
                     </div>
@@ -479,11 +494,11 @@
                 <a href="#events">Events</a>
                 <a href="admin.html" style="opacity: 0.5; margin-top: 1rem; display: inline-block;">🔒 Admin Panel</a>
             </div>
-            <div class="footer-social">
+            <div class="footer-social social-links">
                 <h4 style="color: white;">Connect With Us</h4>
                 <a href="https://instagram.com/sundarhotelandresort" target="_blank" class="social-link">Instagram</a>
-                <a href="#" class="social-link">Facebook</a>
-                <a href="#" class="social-link">TripAdvisor</a>
+                <a href="#" target="_blank" class="social-link">Facebook</a>
+                <a href="#" target="_blank" class="social-link">TripAdvisor</a>
             </div>
         </div>
         <div class="footer-bottom">

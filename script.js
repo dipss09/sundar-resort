@@ -213,8 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 facilitiesList.innerHTML = '';
                 items.forEach(item => {
                     const imgHtml = item.image
-                        ? `<img src="${item.image}" alt="${item.name}" style="width:100%; height:150px; object-fit:cover; border-radius:8px 8px 0 0; margin-bottom:15px;">`
-                        : `<div class="card-icon" style="font-size:3rem; margin-bottom:15px; padding-top: 20px;">🏨</div>`;
+                        ? `<div style="width: 100%; max-height: 400px; display: flex; justify-content: center; background: #1a1a1a;"><img src="${item.image}" alt="${item.name}" style="max-width: 100%; max-height: 400px; object-fit: contain;"></div>`
+                        : `<div class="card-icon" style="font-size:3rem; margin-bottom:15px; padding-top: 20px; text-align: center;">🏨</div>`;
 
                     const card = document.createElement('div');
                     card.className = "card glass-card";
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     card.innerHTML = `
                         ${imgHtml}
-                        <div style="padding: 0 20px;">
+                        <div style="padding: 20px;">
                             <h3>${item.name || 'Facility'}</h3>
                             <p>${item.description || ''}</p>
                         </div>
@@ -248,8 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 offersList.innerHTML = '';
                 items.forEach(item => {
                     const imgHtml = item.image
-                        ? `<img src="${item.image}" alt="${item.title}" style="width:100%; height:200px; object-fit:cover; border-radius:8px 8px 0 0; margin-bottom:15px;">`
-                        : `<div class="card-icon" style="font-size:3rem; margin-bottom:15px; padding-top:20px;">🎁</div>`;
+                        ? `<div style="width: 100%; max-height: 400px; display: flex; justify-content: center; background: #1a1a1a;"><img src="${item.image}" alt="${item.title}" style="max-width: 100%; max-height: 400px; object-fit: contain;"></div>`
+                        : `<div class="card-icon" style="font-size:3rem; margin-bottom:15px; padding-top:20px; text-align: center;">🎁</div>`;
 
                     const card = document.createElement('div');
                     card.className = "card glass-card";
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     card.innerHTML = `
                         ${imgHtml}
-                        <div style="padding: 0 20px;">
+                        <div style="padding: 20px;">
                             <h3>${item.title || 'Special Offer'}</h3>
                             <p>${item.description || ''}</p>
                         </div>
@@ -357,5 +357,114 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Fetch Restaurant Menu
+    const menuContainer = document.getElementById('menu-container');
+    if (menuContainer) {
+        db.collection("restaurantMenu").orderBy("category").onSnapshot(snapshot => {
+            const items = [];
+            snapshot.forEach(doc => items.push(doc.data()));
+            if (items.length > 0) {
+                // Group by category
+                const categorized = items.reduce((acc, item) => {
+                    const cat = item.category || 'Other';
+                    if (!acc[cat]) acc[cat] = [];
+                    acc[cat].push(item);
+                    return acc;
+                }, {});
+
+                let html = '';
+                for (const category in categorized) {
+                    html += `<h3 class="menu-category-title">${category}</h3>`;
+                    categorized[category].forEach(item => {
+                        html += `
+                            <div class="menu-item">
+                                <div class="menu-item-info">
+                                    <div class="menu-item-header">
+                                        <span class="menu-item-name">${item.name}</span>
+                                        <div class="menu-item-dots"></div>
+                                        <span class="menu-item-price">${item.price}</span>
+                                    </div>
+                                    <p class="menu-item-desc">${item.description || ''}</p>
+                                </div>
+                                ${item.image ? `<img src="${item.image}" alt="${item.name}" class="menu-item-img">` : ''}
+                            </div>
+                        `;
+                    });
+                }
+                menuContainer.innerHTML = html;
+            } else {
+                menuContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-style: italic;">Our menu is currently being updated.</p>';
+            }
+        }, err => console.log('Menu fetch:', err));
+    }
+
+    // Fetch Gallery
+    const galleryGrid = document.querySelector('.gallery-grid');
+    if (galleryGrid) {
+        db.collection("gallery").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+            const items = [];
+            snapshot.forEach(doc => items.push(doc.data()));
+            if (items.length > 0) {
+                let html = '';
+                items.forEach((item, index) => {
+                    html += `
+                        <div class="gallery-item" onclick="setGalleryImage(${index + 1})">
+                            <img src="${item.image}" alt="Gallery Image" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="overlay">
+                                <span class="material-symbols-outlined">zoom_in</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                galleryGrid.innerHTML = html;
+                
+                // Redefine totalImages and updateGallery since the number is now dynamic
+                window.totalImages = items.length;
+                window.galleryData = items;
+                
+                window.updateGallery = function(index) {
+                    const galleryMainImg = document.getElementById('galleryMainImg');
+                    if (!galleryMainImg || !window.galleryData[index - 1]) return;
+                    galleryMainImg.src = window.galleryData[index - 1].image;
+                };
+            }
+        }, err => console.log('Gallery fetch:', err));
+    }
+
+    // Fetch Extra Sections (Trust Banner, Location, Settings)
+    db.collection("siteContent").doc("trustBanner").onSnapshot(doc => {
+        if(doc.exists) {
+            const d = doc.data();
+            const gt = document.getElementById('trust-google-text'); if(gt) gt.textContent = d.googleText;
+            const gs = document.getElementById('trust-google-sub'); if(gs) gs.textContent = d.googleSub;
+            const tt = document.getElementById('trust-trip-text'); if(tt) tt.textContent = d.tripText;
+            const ts = document.getElementById('trust-trip-sub'); if(ts) ts.textContent = d.tripSub;
+        }
+    });
+
+    db.collection("siteContent").doc("location").onSnapshot(doc => {
+        if(doc.exists) {
+            const d = doc.data();
+            const addr = document.getElementById('loc-addr'); if(addr) addr.textContent = d.address;
+            const cin = document.getElementById('loc-cin'); if(cin) cin.innerHTML = `<strong>Check-in:</strong> ${d.checkin}`;
+            const cout = document.getElementById('loc-cout'); if(cout) cout.innerHTML = `<strong>Check-out:</strong> ${d.checkout}`;
+        }
+    });
+
+    db.collection("siteContent").doc("settings").onSnapshot(doc => {
+        if(doc.exists) {
+            const d = doc.data();
+            // Try to find the footer icons
+            const socialLinks = document.querySelectorAll('.social-links a');
+            socialLinks.forEach(link => {
+                if(link.innerHTML.includes('instagram') && d.instagram) link.href = d.instagram;
+                if(link.innerHTML.includes('facebook') && d.facebook) link.href = d.facebook;
+                if(link.innerHTML.includes('whatsapp') && d.whatsapp) link.href = `https://wa.me/${d.whatsapp}`;
+            });
+            const ftPhone = document.getElementById('ft-phone'); if(ftPhone && d.phone) ftPhone.textContent = `📞 ${d.phone}`;
+            const mapBtn = document.getElementById('btn-directions'); if(mapBtn && d.mapsUrl) mapBtn.href = d.mapsUrl;
+        }
+    });
 
 });

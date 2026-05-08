@@ -88,7 +88,10 @@
         <button onclick="switchTab('rooms')" id="tab-btn-rooms" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">bed</span> Rooms</button>
         <button onclick="switchTab('services')" id="tab-btn-services" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">new_releases</span> What's New</button>
         <button onclick="switchTab('offers')" id="tab-btn-offers" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">redeem</span> Offers</button>
+        <button onclick="switchTab('menu')" id="tab-btn-menu" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">menu_book</span> Menu</button>
         <button onclick="switchTab('dining')" id="tab-btn-dining" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">restaurant</span> Dining</button>
+        <button onclick="switchTab('gallery')" id="tab-btn-gallery" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">collections</span> Gallery</button>
+        <button onclick="switchTab('extras')" id="tab-btn-extras" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">widgets</span> Extra Sections</button>
         <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">reviews</span> Reviews</button>
         <button onclick="switchTab('settings')" id="tab-btn-settings" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">settings</span> Settings</button>
       </nav>
@@ -207,6 +210,40 @@
         </div>
       </section>
 
+      <!-- MENU TAB -->
+      <section id="tab-menu" class="tab-pane hidden">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
+          <div><h2 class="text-2xl md:text-3xl font-bold text-primary">Restaurant Menu</h2><p class="text-sm text-on-surface-variant">Manage food and beverage items.</p></div>
+          <button onclick="openMenuModal()" class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"><span class="material-symbols-outlined text-sm">add</span> Add Menu Item</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="menu-grid"><div class="p-8 text-center text-on-surface-variant col-span-full">Loading...</div></div>
+        <!-- Menu Modal -->
+        <div id="menu-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center p-4">
+          <div class="bg-surface rounded-3xl p-6 md:p-8 max-w-lg w-full max-h-[95vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold text-primary" id="menu-modal-title">Add Menu Item</h3><button onclick="closeMenuModal()" class="text-on-surface-variant hover:text-primary p-2"><span class="material-symbols-outlined">close</span></button></div>
+            <form id="menu-form" class="space-y-4">
+              <input type="hidden" id="menu-id"/>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Category</label>
+                <input type="text" id="menu-category" required class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="e.g. Starters, Main Course, Drinks" list="category-suggestions">
+                <datalist id="category-suggestions">
+                  <option value="Starters">
+                  <option value="Main Course">
+                  <option value="Desserts">
+                  <option value="Beverages">
+                </datalist>
+              </div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Item Name</label><input type="text" id="menu-name" required class="w-full bg-white rounded-xl p-3 border border-outline/20"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Description (ingredients)</label><textarea id="menu-desc" rows="2" class="w-full bg-white rounded-xl p-3 border border-outline/20"></textarea></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Price</label><input type="text" id="menu-price" required class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="e.g. ₹250"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Image (Optional)</label><input type="file" id="menu-img" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20"><input type="hidden" id="menu-img-url"><div id="menu-img-preview" class="mt-2"></div></div>
+              <div id="menu-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
+              <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark"><span class="material-symbols-outlined">save</span> Save Item</button>
+              <div id="menu-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+            </form>
+          </div>
+        </div>
+      </section>
+
       <!-- DINING TAB -->
       <section id="tab-dining" class="tab-pane hidden max-w-3xl">
         <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6">Dining Section</h2>
@@ -221,6 +258,60 @@
           <div id="dining-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
           <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save Dining</button>
           <div id="dining-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+        </form>
+      </section>
+
+      <!-- GALLERY TAB -->
+      <section id="tab-gallery" class="tab-pane hidden">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
+          <div><h2 class="text-2xl md:text-3xl font-bold text-primary">Gallery Images</h2><p class="text-sm text-on-surface-variant">Add unlimited photos to the photo gallery.</p></div>
+          <button onclick="openGalleryModal()" class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"><span class="material-symbols-outlined text-sm">add_photo_alternate</span> Add Photo</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid"><div class="p-8 text-center text-on-surface-variant col-span-full">Loading...</div></div>
+        <!-- Gallery Modal -->
+        <div id="gallery-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center p-4">
+          <div class="bg-surface rounded-3xl p-6 md:p-8 max-w-lg w-full max-h-[95vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold text-primary" id="gallery-modal-title">Add Photo</h3><button onclick="closeGalleryModal()" class="text-on-surface-variant hover:text-primary p-2"><span class="material-symbols-outlined">close</span></button></div>
+            <form id="gallery-form" class="space-y-4">
+              <input type="hidden" id="gal-id"/>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Quote/Caption</label><input type="text" id="gal-quote" required class="w-full bg-white rounded-xl p-3 border border-outline/20"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Image</label><input type="file" id="gal-img" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20"><input type="hidden" id="gal-img-url"><div id="gal-img-preview" class="mt-2"></div></div>
+              <div id="gal-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
+              <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark"><span class="material-symbols-outlined">save</span> Save Photo</button>
+              <div id="gal-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXTRA SECTIONS TAB -->
+      <section id="tab-extras" class="tab-pane hidden max-w-3xl">
+        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">Extra Sections</h2>
+        <p class="text-sm text-on-surface-variant mb-6">Manage static text sections across the site.</p>
+        
+        <!-- Trust Banner Form -->
+        <form id="trust-form" class="space-y-4 glass-card p-6 rounded-2xl mb-6">
+          <h3 class="text-lg font-bold text-primary border-b border-outline/20 pb-2 mb-4">Trust Banner (Ratings)</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Google Rating Text</label><input type="text" id="trust-google" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="4.0 Google Rating"></div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Google Subtext</label><input type="text" id="trust-google-sub" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Based on 800+ reviews"></div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">TripAdvisor Text</label><input type="text" id="trust-trip" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="4.5 TripAdvisor"></div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">TripAdvisor Subtext</label><input type="text" id="trust-trip-sub" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Traveler's Choice"></div>
+          </div>
+          <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Save Trust Banner</button>
+          <div id="trust-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+        </form>
+
+        <!-- Location Form -->
+        <form id="location-form" class="space-y-4 glass-card p-6 rounded-2xl mb-6">
+          <h3 class="text-lg font-bold text-primary border-b border-outline/20 pb-2 mb-4">Location & Check-in</h3>
+          <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Full Address</label><textarea id="loc-address" rows="2" class="w-full bg-white rounded-xl p-3 border border-outline/20"></textarea></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Check-in Time</label><input type="text" id="loc-checkin" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="12:00 pm"></div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Check-out Time</label><input type="text" id="loc-checkout" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="12:00 pm"></div>
+          </div>
+          <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Save Location</button>
+          <div id="loc-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
         </form>
       </section>
 
@@ -242,6 +333,9 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Instagram URL</label><input type="url" id="set-instagram" class="w-full bg-white rounded-xl p-4 border border-outline/20" placeholder="https://instagram.com/sundarhotelandresort"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Facebook URL</label><input type="url" id="set-facebook" class="w-full bg-white rounded-xl p-4 border border-outline/20" placeholder="https://facebook.com/sundarhotelandresort"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Google Maps URL</label><input type="url" id="set-maps" class="w-full bg-white rounded-xl p-4 border border-outline/20"></div>
             </div>
           </div>
