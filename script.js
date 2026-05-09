@@ -528,7 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const t = document.getElementById('menu-title'); if(t && d.menu.title) t.textContent = d.menu.title;
                 const desc = document.getElementById('menu-desc'); if(desc && d.menu.desc) desc.textContent = d.menu.desc;
             }
-            }
         }
     });
 
