@@ -717,87 +717,29 @@ window.removeImage = async function(docName, fieldName = 'image') {
 // ──────────────────────────────────────────────
 //  💪 FACILITIES CRUD
 // ──────────────────────────────────────────────
-let facilitiesData = [];
-db.collection("facilities").onSnapshot(snapshot => {
-  facilitiesData = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
-  renderFacilities();
-});
-
-function renderFacilities() {
-  const container = document.getElementById("fac-grid");
-  if (!container) return;
-  if (!facilitiesData.length) {
-    container.innerHTML = '<div class="p-8 text-center text-on-surface-variant col-span-full">No facilities added yet.</div>';
-    return;
-  }
-  container.innerHTML = facilitiesData.map(fac => `
-    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between bg-white relative group">
-      <div>
-        <div class="text-4xl mb-4">${fac.icon || '⭐'}</div>
-        <h3 class="text-xl font-bold text-primary mb-2">${fac.title}</h3>
-        <ul class="text-sm text-on-surface-variant list-disc pl-5 mb-4 space-y-1">
-          ${(fac.list || []).map(li => `<li>${li}</li>`).join('')}
-        </ul>
-      </div>
-      <div class="flex justify-between items-center pt-4 border-t border-outline/10 mt-auto">
-        <button onclick="editFac('${fac.id}')" class="text-primary font-bold text-sm hover:underline flex items-center gap-1"><span class="material-symbols-outlined text-sm">edit</span> Edit</button>
-        <button onclick="deleteFac('${fac.id}')" class="text-red-500 font-bold text-sm hover:underline flex items-center gap-1"><span class="material-symbols-outlined text-sm">delete</span> Delete</button>
-      </div>
-    </div>
-  `).join('');
+function loadFacilitiesStatic() {
+  db.collection("siteContent").doc("facilities").onSnapshot(doc => {
+    if (!doc.exists) return;
+    const d = doc.data();
+    document.getElementById("fac-card1").value = (d.card1 || []).join(', ');
+    document.getElementById("fac-card2").value = (d.card2 || []).join(', ');
+    document.getElementById("fac-card3").value = (d.card3 || []).join(', ');
+  });
 }
+loadFacilitiesStatic(); // Load it on init
 
-window.openFacModal = function() {
-  document.getElementById("fac-form").reset();
-  document.getElementById("fac-id").value = "";
-  document.getElementById("fac-modal-title").textContent = "Add Facility Card";
-  document.getElementById("fac-modal").classList.remove("hidden");
-};
-
-window.closeFacModal = function() {
-  document.getElementById("fac-modal").classList.add("hidden");
-};
-
-window.editFac = function(id) {
-  const fac = facilitiesData.find(f => f.id === id);
-  if(!fac) return;
-  document.getElementById("fac-id").value = fac.id;
-  document.getElementById("fac-icon").value = fac.icon || '';
-  document.getElementById("fac-title").value = fac.title || '';
-  document.getElementById("fac-list").value = (fac.list || []).join(', ');
-  document.getElementById("fac-modal-title").textContent = "Edit Facility Card";
-  document.getElementById("fac-modal").classList.remove("hidden");
-};
-
-window.deleteFac = async function(id) {
-  if(!confirm("Delete this facility card permanently?")) return;
-  try {
-    await db.collection("facilities").doc(id).delete();
-  } catch(err) { alert("Error deleting: " + err.message); }
-};
-
-document.getElementById("fac-form").addEventListener("submit", async e => {
+document.getElementById("facilities-static-form").addEventListener("submit", async e => {
   e.preventDefault();
   const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
   try {
-    const id = document.getElementById("fac-id").value;
-    const rawList = document.getElementById("fac-list").value;
-    const listArr = rawList.split(',').map(s => s.trim()).filter(Boolean);
-    
     const payload = {
-      icon: document.getElementById("fac-icon").value,
-      title: document.getElementById("fac-title").value,
-      list: listArr
+      card1: document.getElementById("fac-card1").value.split(',').map(s => s.trim()).filter(Boolean),
+      card2: document.getElementById("fac-card2").value.split(',').map(s => s.trim()).filter(Boolean),
+      card3: document.getElementById("fac-card3").value.split(',').map(s => s.trim()).filter(Boolean)
     };
-
-    if(id) {
-      await db.collection("facilities").doc(id).update(payload);
-    } else {
-      payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      await db.collection("facilities").add(payload);
-    }
     
-    closeFacModal();
+    await db.collection("siteContent").doc("facilities").set(payload, {merge: true});
+    showMsg("fac-msg");
   } catch(err) {
     console.error(err);
     alert("Error saving: " + err.message);

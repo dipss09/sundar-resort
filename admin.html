@@ -294,28 +294,32 @@
         </div>
       </section>
 
-      <!-- FACILITIES TAB (NEW) -->
-      <section id="tab-facilities" class="tab-pane hidden">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
-          <div><h2 class="text-2xl md:text-3xl font-bold text-primary">Facilities</h2><p class="text-sm text-on-surface-variant">Manage the facility cards (Amenities, Room Features, etc.).</p></div>
-          <button onclick="openFacModal()" class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"><span class="material-symbols-outlined text-sm">add</span> Add Facility Card</button>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="fac-grid"><div class="p-8 text-center text-on-surface-variant col-span-full">Loading facilities...</div></div>
+      <!-- FACILITIES TAB (STATIC) -->
+      <section id="tab-facilities" class="tab-pane hidden max-w-3xl">
+        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">Facilities</h2>
+        <p class="text-sm text-on-surface-variant mb-6">Manage the features listed in the 3 main facility cards.</p>
         
-        <!-- Facilities Modal -->
-        <div id="fac-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center p-4">
-          <div class="bg-surface rounded-3xl p-6 md:p-8 max-w-lg w-full max-h-[95vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold text-primary" id="fac-modal-title">Add Facility Card</h3><button onclick="closeFacModal()" class="text-on-surface-variant hover:text-primary p-2"><span class="material-symbols-outlined">close</span></button></div>
-            <form id="fac-form" class="space-y-4">
-              <input type="hidden" id="fac-id"/>
-              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Icon (Emoji or Text)</label><input type="text" id="fac-icon" required class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="e.g. 🏨"></div>
-              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Title</label><input type="text" id="fac-title" required class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Property Amenities"></div>
-              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Features (comma separated list)</label><textarea id="fac-list" rows="4" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Free parking, WiFi, Pool, Free breakfast"></textarea></div>
-              <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark"><span class="material-symbols-outlined">save</span> Save Facility</button>
-              <div id="fac-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
-            </form>
+        <form id="facilities-static-form" class="space-y-6 glass-card p-6 rounded-2xl">
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Property Amenities (Card 1)</label>
+              <textarea id="fac-card1" rows="3" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Free parking, WiFi, Pool..."></textarea>
+              <p class="text-[10px] text-on-surface-variant mt-1">Separate items with commas.</p>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Room Features (Card 2)</label>
+              <textarea id="fac-card2" rows="3" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Air conditioning, Housekeeping..."></textarea>
+              <p class="text-[10px] text-on-surface-variant mt-1">Separate items with commas.</p>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Good to know (Card 3)</label>
+              <textarea id="fac-card3" rows="3" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="24-hour security, First aid kit..."></textarea>
+              <p class="text-[10px] text-on-surface-variant mt-1">Separate items with commas.</p>
+            </div>
           </div>
-        </div>
+          <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"><span class="material-symbols-outlined">save</span> Save Facilities</button>
+          <div id="fac-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+        </form>
       </section>
 
       <!-- EXTRA SECTIONS TAB -->

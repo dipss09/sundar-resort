@@ -557,34 +557,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Fetch Facilities (Real-time)
-    const facMainGrid = document.getElementById('facilities-list-main');
-    if (facMainGrid) {
-        db.collection("facilities").onSnapshot(snapshot => {
-            const facs = [];
-            snapshot.forEach(doc => facs.push(doc.data()));
-
-            if (facs.length > 0) {
-                facMainGrid.innerHTML = '';
-                facs.forEach(fac => {
-                    const card = document.createElement('div');
-                    card.className = "card glass-card";
-                    card.style.background = "white";
-                    
-                    const listHtml = (fac.list || []).map(li => `<li>${li}</li>`).join('');
-                    
-                    card.innerHTML = `
-                        <div class="card-icon" style="font-size: 2.5rem; margin-bottom: 1rem;">${fac.icon || '⭐'}</div>
-                        <h3 style="margin-bottom: 1rem;">${fac.title || 'Facility'}</h3>
-                        <ul class="feature-list">
-                            ${listHtml}
-                        </ul>
-                    `;
-                    facMainGrid.appendChild(card);
-                });
-            } else {
-                facMainGrid.innerHTML = '<p style="text-align:center; width:100%;">More facilities coming soon.</p>';
+    db.collection("siteContent").doc("facilities").onSnapshot(doc => {
+        if(doc.exists) {
+            const d = doc.data();
+            
+            const list1 = document.getElementById("fac-list-1");
+            if(list1 && d.card1 && d.card1.length > 0) {
+                list1.innerHTML = d.card1.map(li => `<li>${li}</li>`).join('');
             }
-        });
-    }
+            
+            const list2 = document.getElementById("fac-list-2");
+            if(list2 && d.card2 && d.card2.length > 0) {
+                list2.innerHTML = d.card2.map(li => `<li>${li}</li>`).join('');
+            }
+            
+            const list3 = document.getElementById("fac-list-3");
+            if(list3 && d.card3 && d.card3.length > 0) {
+                list3.innerHTML = d.card3.map(li => `<li>${li}</li>`).join('');
+            }
+        }
+    });
 
 });
