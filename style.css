@@ -51,6 +51,8 @@ body {
     background-color: var(--bg-white);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
 }
 
 h1,
@@ -449,10 +451,7 @@ img {
     width: 100%;
     height: 100%;
     z-index: -2;
-    background-color: #1a2a1a;
-    background-image: url('assets/hero_exterior_1773010225483.png');
-    background-size: cover;
-    background-position: center;
+    background-color: #111c11;
     overflow: hidden;
 }
 
@@ -643,10 +642,7 @@ img {
 
 @media (max-width: 899px) {
     .auto-grid.reverse {
-        direction: rtl;
-    }
-
-    .auto-grid.reverse>* {
+        /* Remove direction:rtl — it causes right-side overflow gap on mobile */
         direction: ltr;
     }
 }
@@ -932,12 +928,19 @@ img {
         padding: 0.38rem 0.6rem !important;
         font-size: 0.72rem !important;
         white-space: nowrap;
+        color: white !important;
+        border-color: rgba(255,255,255,0.6) !important;
     }
     .nav-book-now svg { width: 13px; height: 13px; margin-left: 0 !important; }
     .nav-book-online {
         padding: 0.38rem 0.65rem !important;
         font-size: 0.72rem !important;
         white-space: nowrap;
+    }
+    /* When scrolled on mobile — make Book Now text dark */
+    .header.scrolled .nav-book-now {
+        color: var(--secondary) !important;
+        border-color: rgba(0,0,0,0.25) !important;
     }
     .mobile-menu-btn {
         width: 22px;
