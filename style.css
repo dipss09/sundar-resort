@@ -42,6 +42,7 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: hidden;
 }
 
 body {
@@ -263,12 +264,14 @@ img {
     color: var(--secondary);
 }
 
-.header.scrolled .btn-outline {
+.header.scrolled .btn-outline,
+.header.scrolled .nav-book-now {
     color: var(--secondary);
     border-color: rgba(0, 0, 0, 0.2);
 }
 
-.header.scrolled .btn-outline:hover {
+.header.scrolled .btn-outline:hover,
+.header.scrolled .nav-book-now:hover {
     background-color: var(--primary);
     color: white;
     border-color: var(--primary);
@@ -917,31 +920,29 @@ img {
     .section-kicker { font-size: 0.68rem; letter-spacing: 2px; margin-bottom: 0.4rem; }
 
     /* === Header / Nav Compact === */
-    .nav-container { padding: 0 0.8rem; }
-    .logo img { height: 38px !important; }
-    .nav-actions {
-        gap: 0.4rem;
-    }
-    /* Show Book Now as icon-only on mobile */
-    .nav-actions .btn-outline {
+    .nav-container { padding: 0 0.7rem; }
+    .logo img { height: 36px !important; }
+    .nav-actions { gap: 0.35rem; }
+
+    /* Both buttons compact with small text */
+    .nav-book-now {
         display: flex !important;
         align-items: center;
-        padding: 0.4rem 0.6rem !important;
-        font-size: 0 !important;    /* hide text */
-        border-radius: 50px;
+        gap: 0.25rem;
+        padding: 0.38rem 0.6rem !important;
+        font-size: 0.72rem !important;
+        white-space: nowrap;
     }
-    .nav-actions .btn-outline svg {
-        margin-left: 0 !important;
-        width: 16px;
-        height: 16px;
-    }
-    .nav-actions .btn-primary {
-        font-size: 0.75rem !important;
-        padding: 0.4rem 0.75rem !important;
+    .nav-book-now svg { width: 13px; height: 13px; margin-left: 0 !important; }
+    .nav-book-online {
+        padding: 0.38rem 0.65rem !important;
+        font-size: 0.72rem !important;
+        white-space: nowrap;
     }
     .mobile-menu-btn {
-        width: 24px;
+        width: 22px;
         height: 16px;
+        flex-shrink: 0;
     }
     .mobile-menu-btn span:nth-child(2) { top: 7px; }
     .mobile-menu-btn span:nth-child(3) { top: 14px; }
