@@ -446,6 +446,8 @@ img {
     width: 100%;
     height: 100%;
     z-index: -2;
+    background-color: #1a2a1a;
+    overflow: hidden;
 }
 
 .hero-bg::after {
@@ -455,15 +457,19 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%);
-    z-index: -1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.75) 100%);
+    z-index: 1;
 }
 
 .parallax-img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 110%;
     object-fit: cover;
     object-position: center;
+    z-index: 0;
 }
 
 .hero-content {
@@ -472,6 +478,7 @@ img {
     max-width: 800px;
     padding: 0 2rem;
     z-index: 10;
+    position: relative;
     margin-top: 5rem;
 }
 
@@ -890,76 +897,109 @@ img {
     flex-shrink: 0;
 }
 
-/* ==================== 
+/* ====================
    Mobile Responsiveness Overrides
    ==================== */
 @media (max-width: 768px) {
-    .section {
-        padding: 3rem 0;
+
+    /* === Global Compact === */
+    .section { padding: 2.5rem 0; }
+    .py-large { padding: 2.5rem 0; }
+    .container { padding: 0 1rem; }
+
+    h1 { font-size: 1.75rem !important; margin-bottom: 0.6rem !important; line-height: 1.2 !important; }
+    h2 { font-size: 1.4rem !important; margin-bottom: 0.5rem !important; }
+    h3 { font-size: 1.1rem !important; }
+    p  { font-size: 0.9rem; margin-bottom: 0.6rem; }
+    .section-kicker { font-size: 0.7rem; margin-bottom: 0.4rem; }
+
+    /* === Header / Nav Compact === */
+    .nav-actions .btn-outline {
+        display: none; /* Hide "Book Now" on mobile — hamburger menu handles nav */
     }
-    .py-large {
-        padding: 3rem 0;
-    }
-    h1 { font-size: 2rem !important; margin-bottom: 1rem !important; }
-    h2 { font-size: 1.5rem !important; margin-bottom: 1rem !important; }
-    p { font-size: 0.95rem; }
-    
-    .hero {
-        height: 60vh;
-        min-height: 400px;
-    }
-    
-    .hero-content {
-        margin-top: 4rem;
-        padding: 0 1rem;
-    }
-    
-    .hero-bg {
-        transform: none !important;
-    }
-    
-    .parallax-img {
-        height: 100%;
+    .nav-actions .btn-primary {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.8rem !important;
     }
 
-    .cards-grid, .gallery-grid, .auto-grid {
-        grid-template-columns: 1fr !important;
-        gap: 1.5rem !important;
+    /* === Hero Section === */
+    .hero {
+        height: 55vh;
+        min-height: 320px;
     }
-    
-    .glass-card {
-        padding: 1.5rem !important;
+    .hero-bg,
+    .hero-bg * {
+        transform: none !important;
+        -webkit-transform: none !important;
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
     }
-    
+    .parallax-img {
+        height: 100% !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        transform: none !important;
+    }
+    .hero-content {
+        margin-top: 3.5rem;
+        padding: 0 1rem;
+        max-width: 100%;
+    }
+    .hero .badge { font-size: 0.65rem; padding: 0.3rem 0.7rem; margin-bottom: 0.6rem; }
+    .hero-subtext { font-size: 0.9rem; margin-bottom: 1.2rem; }
+    .hero-cta { gap: 0.6rem; }
+    .btn-large { padding: 0.65rem 1.3rem !important; font-size: 0.9rem !important; }
+
+    /* === Trust Banner === */
     .trust-banner {
         flex-direction: column;
-        padding: 1.5rem;
-        gap: 1rem;
-        margin: -30px 1rem 3rem !important;
+        padding: 1rem;
+        gap: 0.6rem;
+        margin: -20px 1rem 2rem !important;
     }
-    
-    .menu-paper {
-        padding: 1.5rem 1rem;
-    }
-    
-    .menu-item {
-        flex-direction: column;
-    }
-    
-    .menu-item-img {
-        width: 100%;
-        height: 150px;
-        margin-top: 0.5rem;
-    }
-    
-    .menu-item-dots {
-        display: none;
-    }
-    
-    .menu-item-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+    .trust-banner .trust-item { gap: 0.5rem; }
+    .trust-banner .trust-item span { font-size: 0.85rem; }
+
+    /* === Cards & Grids === */
+    .cards-grid, .gallery-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .auto-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+    .glass-card { padding: 1rem !important; }
+    .card { padding: 1rem !important; }
+    .card-icon { font-size: 1.8rem !important; margin-bottom: 0.5rem !important; }
+
+    /* === About Section === */
+    .rounded-img { border-radius: var(--radius-sm) !important; }
+    .section-text { padding: 0 !important; }
+    .img-wrapper.dual-images .img-1,
+    .img-wrapper.dual-images .img-2 { height: 160px !important; }
+
+    /* === Accommodation / Rooms === */
+    .room-card { margin-bottom: 1rem; }
+    .room-card img { height: 180px; }
+
+    /* === Gallery === */
+    .gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
+    .gallery-img { height: 130px !important; object-fit: cover; }
+
+    /* === Location === */
+    .map-wrapper { height: 250px !important; }
+    .location-text { padding: 0 !important; }
+
+    /* === Book Online Section === */
+    .book-grid { gap: 0.75rem !important; }
+    .book-card { padding: 1rem !important; }
+
+    /* === Menu === */
+    .menu-paper { padding: 1rem 0.75rem; }
+    .menu-item { flex-direction: column; }
+    .menu-item-img { width: 100%; height: 130px; margin-top: 0.5rem; }
+    .menu-item-dots { display: none; }
+    .menu-item-header { flex-direction: column; align-items: flex-start; }
+
+    /* === Mobile Menu Overlay (bigger text) === */
+    .mobile-menu-overlay a { font-size: 1.6rem; }
 }
 
 .btn-outline-dark {
