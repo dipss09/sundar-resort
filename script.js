@@ -142,6 +142,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ──────────────────────────────────────────────
     //  🔥 FIRESTORE DATA LOADING (replaces Strapi)
     // ──────────────────────────────────────────────
+    
+    // Fast Image Cache Helper
+    function updateImgCache(key, base64) {
+        try {
+            const cache = JSON.parse(localStorage.getItem('sundar_img_cache') || '{}');
+            if(cache[key] !== base64) {
+                cache[key] = base64;
+                localStorage.setItem('sundar_img_cache', JSON.stringify(cache));
+            }
+        } catch(e) {}
+    }
 
     // Fetch Hero from Firestore (Real-time)
     db.collection("siteContent").doc("hero").onSnapshot(doc => {
@@ -153,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.getElementById('hero-img');
                 img.src = data.heroImage;
                 img.classList.remove('bg-skeleton');
+                updateImgCache('hero', data.heroImage);
             }
         }
     }, err => console.log('Hero fetch:', err));
@@ -167,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.getElementById('about-img');
                 img.src = data.image;
                 img.classList.remove('bg-skeleton');
+                updateImgCache('about', data.image);
             }
         }
     }, err => console.log('About fetch:', err));
@@ -295,6 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.getElementById('dining-img');
                 img.src = data.image;
                 img.classList.remove('bg-skeleton');
+                updateImgCache('dining', data.image);
             }
         }
     }, err => console.log('Dining fetch:', err));
@@ -514,7 +528,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 const t = document.getElementById('menu-title'); if(t && d.menu.title) t.textContent = d.menu.title;
                 const desc = document.getElementById('menu-desc'); if(desc && d.menu.desc) desc.textContent = d.menu.desc;
             }
+            }
         }
     });
+
+    // Fetch Leisure (Real-time)
+    db.collection("siteContent").doc("leisure").onSnapshot(doc => {
+        if(doc.exists) {
+            const d = doc.data();
+            const kicker = document.getElementById('leisure-kicker'); if(kicker && d.kicker) kicker.textContent = d.kicker;
+            const title = document.getElementById('leisure-title'); if(title && d.title) title.textContent = d.title;
+            const desc = document.getElementById('leisure-desc'); if(desc && d.description) desc.textContent = d.description;
+            
+            if (d.tags) {
+                const tagsCont = document.getElementById('leisure-tags');
+                if (tagsCont) {
+                    tagsCont.innerHTML = d.tags.map(t => `<span class="tag">${t}</span>`).join('');
+                }
+            }
+            if (d.img1) {
+                const img1 = document.getElementById('leisure-img-1');
+                if(img1) { img1.src = d.img1; img1.classList.remove('bg-skeleton'); updateImgCache('leisure1', d.img1); }
+            }
+            if (d.img2) {
+                const img2 = document.getElementById('leisure-img-2');
+                if(img2) { img2.src = d.img2; img2.classList.remove('bg-skeleton'); updateImgCache('leisure2', d.img2); }
+            }
+        }
+    });
+
+    // Fetch Facilities (Real-time)
+    const facMainGrid = document.getElementById('facilities-list-main');
+    if (facMainGrid) {
+        db.collection("facilities").onSnapshot(snapshot => {
+            const facs = [];
+            snapshot.forEach(doc => facs.push(doc.data()));
+
+            if (facs.length > 0) {
+                facMainGrid.innerHTML = '';
+                facs.forEach(fac => {
+                    const card = document.createElement('div');
+                    card.className = "card glass-card";
+                    card.style.background = "white";
+                    
+                    const listHtml = (fac.list || []).map(li => `<li>${li}</li>`).join('');
+                    
+                    card.innerHTML = `
+                        <div class="card-icon" style="font-size: 2.5rem; margin-bottom: 1rem;">${fac.icon || '⭐'}</div>
+                        <h3 style="margin-bottom: 1rem;">${fac.title || 'Facility'}</h3>
+                        <ul class="feature-list">
+                            ${listHtml}
+                        </ul>
+                    `;
+                    facMainGrid.appendChild(card);
+                });
+            } else {
+                facMainGrid.innerHTML = '<p style="text-align:center; width:100%;">More facilities coming soon.</p>';
+            }
+        });
+    }
 
 });

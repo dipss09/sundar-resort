@@ -691,3 +691,167 @@ document.getElementById("logo-form").addEventListener("submit", async e => {
     document.getElementById('logo-upload-progress').classList.add('hidden');
   }
 });
+
+// ──────────────────────────────────────────────
+//  🗑️ REMOVE IMAGE UTILITY
+// ──────────────────────────────────────────────
+window.removeImage = async function(docName, fieldName = 'image') {
+  if(!confirm(`Are you sure you want to remove this image?`)) return;
+  try {
+    const update = {};
+    update[fieldName] = firebase.firestore.FieldValue.delete();
+    // Special cases where field name varies
+    if(docName === 'hero' && fieldName === 'image') update['heroImage'] = firebase.firestore.FieldValue.delete();
+    
+    await db.collection("siteContent").doc(docName).update(update);
+    alert('Image removed successfully.');
+    // Clear preview manually
+    const previewEl = document.getElementById(`${docName}-img-preview`);
+    if(previewEl) previewEl.innerHTML = '';
+  } catch(err) {
+    console.error(err);
+    alert('Error removing image: ' + err.message);
+  }
+};
+
+// ──────────────────────────────────────────────
+//  💪 FACILITIES CRUD
+// ──────────────────────────────────────────────
+let facilitiesData = [];
+db.collection("facilities").onSnapshot(snapshot => {
+  facilitiesData = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+  renderFacilities();
+});
+
+function renderFacilities() {
+  const container = document.getElementById("fac-grid");
+  if (!container) return;
+  if (!facilitiesData.length) {
+    container.innerHTML = '<div class="p-8 text-center text-on-surface-variant col-span-full">No facilities added yet.</div>';
+    return;
+  }
+  container.innerHTML = facilitiesData.map(fac => `
+    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between bg-white relative group">
+      <div>
+        <div class="text-4xl mb-4">${fac.icon || '⭐'}</div>
+        <h3 class="text-xl font-bold text-primary mb-2">${fac.title}</h3>
+        <ul class="text-sm text-on-surface-variant list-disc pl-5 mb-4 space-y-1">
+          ${(fac.list || []).map(li => `<li>${li}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="flex justify-between items-center pt-4 border-t border-outline/10 mt-auto">
+        <button onclick="editFac('${fac.id}')" class="text-primary font-bold text-sm hover:underline flex items-center gap-1"><span class="material-symbols-outlined text-sm">edit</span> Edit</button>
+        <button onclick="deleteFac('${fac.id}')" class="text-red-500 font-bold text-sm hover:underline flex items-center gap-1"><span class="material-symbols-outlined text-sm">delete</span> Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.openFacModal = function() {
+  document.getElementById("fac-form").reset();
+  document.getElementById("fac-id").value = "";
+  document.getElementById("fac-modal-title").textContent = "Add Facility Card";
+  document.getElementById("fac-modal").classList.remove("hidden");
+};
+
+window.closeFacModal = function() {
+  document.getElementById("fac-modal").classList.add("hidden");
+};
+
+window.editFac = function(id) {
+  const fac = facilitiesData.find(f => f.id === id);
+  if(!fac) return;
+  document.getElementById("fac-id").value = fac.id;
+  document.getElementById("fac-icon").value = fac.icon || '';
+  document.getElementById("fac-title").value = fac.title || '';
+  document.getElementById("fac-list").value = (fac.list || []).join(', ');
+  document.getElementById("fac-modal-title").textContent = "Edit Facility Card";
+  document.getElementById("fac-modal").classList.remove("hidden");
+};
+
+window.deleteFac = async function(id) {
+  if(!confirm("Delete this facility card permanently?")) return;
+  try {
+    await db.collection("facilities").doc(id).delete();
+  } catch(err) { alert("Error deleting: " + err.message); }
+};
+
+document.getElementById("fac-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    const id = document.getElementById("fac-id").value;
+    const rawList = document.getElementById("fac-list").value;
+    const listArr = rawList.split(',').map(s => s.trim()).filter(Boolean);
+    
+    const payload = {
+      icon: document.getElementById("fac-icon").value,
+      title: document.getElementById("fac-title").value,
+      list: listArr
+    };
+
+    if(id) {
+      await db.collection("facilities").doc(id).update(payload);
+    } else {
+      payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection("facilities").add(payload);
+    }
+    
+    closeFacModal();
+  } catch(err) {
+    console.error(err);
+    alert("Error saving: " + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ──────────────────────────────────────────────
+//  🌴 LEISURE SECTION
+// ──────────────────────────────────────────────
+function loadLeisure() {
+  db.collection("siteContent").doc("leisure").onSnapshot(doc => {
+    if (!doc.exists) return;
+    const d = doc.data();
+    document.getElementById("leisure-kicker").value = d.kicker || '';
+    document.getElementById("leisure-title").value = d.title || '';
+    document.getElementById("leisure-desc").value = d.description || '';
+    document.getElementById("leisure-tags").value = (d.tags || []).join(', ');
+    
+    if(d.img1) document.getElementById("leisure-img1-preview").innerHTML = `<img src="${d.img1}" class="h-20 object-cover rounded-xl mt-2">`;
+    if(d.img2) document.getElementById("leisure-img2-preview").innerHTML = `<img src="${d.img2}" class="h-20 object-cover rounded-xl mt-2">`;
+  });
+}
+loadLeisure(); // Load it on init
+
+document.getElementById("leisure-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']"); btn.disabled = true;
+  try {
+    const payload = {
+      kicker: document.getElementById("leisure-kicker").value,
+      title: document.getElementById("leisure-title").value,
+      description: document.getElementById("leisure-desc").value,
+      tags: document.getElementById("leisure-tags").value.split(',').map(s => s.trim()).filter(Boolean)
+    };
+    
+    document.getElementById('leisure-upload-progress').classList.remove('hidden');
+    
+    const f1 = document.getElementById("leisure-img1").files[0];
+    if (f1) payload.img1 = await compressAndUpload(f1);
+    
+    const f2 = document.getElementById("leisure-img2").files[0];
+    if (f2) payload.img2 = await compressAndUpload(f2);
+    
+    await db.collection("siteContent").doc("leisure").set(payload, {merge: true});
+    showMsg("leisure-msg");
+    document.getElementById("leisure-img1").value = '';
+    document.getElementById("leisure-img2").value = '';
+  } catch(err) {
+    console.error(err);
+    alert("Error saving: " + err.message);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('leisure-upload-progress').classList.add('hidden');
+  }
+});

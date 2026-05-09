@@ -92,6 +92,7 @@
         <button onclick="switchTab('dining')" id="tab-btn-dining" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">restaurant</span> Dining</button>
         <button onclick="switchTab('gallery')" id="tab-btn-gallery" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">collections</span> Gallery</button>
         <button onclick="switchTab('extras')" id="tab-btn-extras" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">widgets</span> Extra Sections</button>
+        <button onclick="switchTab('facilities')" id="tab-btn-facilities" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">fitness_center</span> Facilities</button>
         <button onclick="switchTab('reviews')" id="tab-btn-reviews" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">reviews</span> Reviews</button>
         <button onclick="switchTab('settings')" id="tab-btn-settings" class="whitespace-nowrap md:w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-xl text-sm font-bold flex items-center gap-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-sm">settings</span> Settings</button>
       </nav>
@@ -116,7 +117,10 @@
             <input type="file" id="hero-img-input" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
             <div id="hero-img-preview" class="mt-2"></div></div>
           <div id="hero-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
-          <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save Hero</button>
+          <div class="flex gap-2">
+            <button type="submit" class="flex-1 py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save Hero</button>
+            <button type="button" onclick="removeImage('hero')" class="py-4 px-5 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors" title="Remove Image"><span class="material-symbols-outlined">delete</span></button>
+          </div>
           <div id="hero-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
         </form>
       </section>
@@ -133,7 +137,10 @@
             <input type="file" id="about-img-input" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
             <div id="about-img-preview" class="mt-2"></div></div>
           <div id="about-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
-          <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save About</button>
+          <div class="flex gap-2">
+            <button type="submit" class="flex-1 py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save About</button>
+            <button type="button" onclick="removeImage('about')" class="py-4 px-5 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors" title="Remove Image"><span class="material-symbols-outlined">delete</span></button>
+          </div>
           <div id="about-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
         </form>
       </section>
@@ -256,7 +263,10 @@
             <input type="file" id="dining-img-input" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
             <div id="dining-img-preview" class="mt-2"></div></div>
           <div id="dining-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image... Please wait.</div>
-          <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save Dining</button>
+          <div class="flex gap-2">
+            <button type="submit" class="flex-1 py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined">save</span> Save Dining</button>
+            <button type="button" onclick="removeImage('dining')" class="py-4 px-5 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors" title="Remove Image"><span class="material-symbols-outlined">delete</span></button>
+          </div>
           <div id="dining-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
         </form>
       </section>
@@ -279,6 +289,30 @@
               <div id="gal-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading image(s)... Please wait.</div>
               <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark"><span class="material-symbols-outlined">save</span> Save Photo</button>
               <div id="gal-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- FACILITIES TAB (NEW) -->
+      <section id="tab-facilities" class="tab-pane hidden">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
+          <div><h2 class="text-2xl md:text-3xl font-bold text-primary">Facilities</h2><p class="text-sm text-on-surface-variant">Manage the facility cards (Amenities, Room Features, etc.).</p></div>
+          <button onclick="openFacModal()" class="px-6 py-3 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"><span class="material-symbols-outlined text-sm">add</span> Add Facility Card</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="fac-grid"><div class="p-8 text-center text-on-surface-variant col-span-full">Loading facilities...</div></div>
+        
+        <!-- Facilities Modal -->
+        <div id="fac-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center p-4">
+          <div class="bg-surface rounded-3xl p-6 md:p-8 max-w-lg w-full max-h-[95vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold text-primary" id="fac-modal-title">Add Facility Card</h3><button onclick="closeFacModal()" class="text-on-surface-variant hover:text-primary p-2"><span class="material-symbols-outlined">close</span></button></div>
+            <form id="fac-form" class="space-y-4">
+              <input type="hidden" id="fac-id"/>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Icon (Emoji or Text)</label><input type="text" id="fac-icon" required class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="e.g. 🏨"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Title</label><input type="text" id="fac-title" required class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Property Amenities"></div>
+              <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Features (comma separated list)</label><textarea id="fac-list" rows="4" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Free parking, WiFi, Pool, Free breakfast"></textarea></div>
+              <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark"><span class="material-symbols-outlined">save</span> Save Facility</button>
+              <div id="fac-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
             </form>
           </div>
         </div>
@@ -324,6 +358,34 @@
           <div id="headers-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
         </form>
 
+        <!-- Leisure Form -->
+        <form id="leisure-form" class="space-y-4 glass-card p-6 rounded-2xl mb-6">
+          <h3 class="text-lg font-bold text-primary border-b border-outline/20 pb-2 mb-4">Leisure Section</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Kicker</label><input type="text" id="leisure-kicker" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Resort Leisure"></div>
+            <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Title</label><input type="text" id="leisure-title" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Unwind in Nature"></div>
+          </div>
+          <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Description</label><textarea id="leisure-desc" rows="3" class="w-full bg-white rounded-xl p-3 border border-outline/20"></textarea></div>
+          <div><label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Tags (comma separated)</label><input type="text" id="leisure-tags" class="w-full bg-white rounded-xl p-3 border border-outline/20" placeholder="Large Pool, Cabanas, Gardens"></div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Image 1 (e.g., Pool)</label>
+              <input type="file" id="leisure-img1" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
+              <div id="leisure-img1-preview" class="mt-2"></div>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 block">Image 2 (e.g., Garden)</label>
+              <input type="file" id="leisure-img2" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
+              <div id="leisure-img2-preview" class="mt-2"></div>
+            </div>
+          </div>
+          <div id="leisure-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading images... Please wait.</div>
+          
+          <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Save Leisure Section</button>
+          <div id="leisure-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Saved successfully!</div>
+        </form>
+
         <!-- Trust Banner Form -->
         <form id="trust-form" class="space-y-4 glass-card p-6 rounded-2xl mb-6">
           <h3 class="text-lg font-bold text-primary border-b border-outline/20 pb-2 mb-4">Trust Banner (Ratings)</h3>
@@ -367,7 +429,11 @@
             <input type="file" id="set-logo-input" accept="image/*" class="w-full bg-white rounded-xl p-3 border border-outline/20">
             <div id="set-logo-preview" class="mt-2"></div></div>
           <div id="logo-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading logo... Please wait.</div>
-          <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Update Logo</button>
+          <div id="logo-upload-progress" class="text-xs text-primary-light mt-1 hidden font-bold animate-pulse">Uploading logo... Please wait.</div>
+          <div class="flex gap-2">
+            <button type="submit" class="flex-1 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-sm">save</span> Update Logo</button>
+            <button type="button" onclick="removeImage('settings', 'logoUrl')" class="py-3 px-4 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors" title="Remove Logo"><span class="material-symbols-outlined text-sm">delete</span></button>
+          </div>
           <div id="logo-msg" class="hidden mt-2 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center justify-center gap-2 font-bold transition-all"><span class="material-symbols-outlined">check_circle</span> Logo updated!</div>
         </form>
 
