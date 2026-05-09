@@ -263,6 +263,17 @@ img {
     color: var(--secondary);
 }
 
+.header.scrolled .btn-outline {
+    color: var(--secondary);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.header.scrolled .btn-outline:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
