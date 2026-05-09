@@ -1,3 +1,8 @@
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 document.addEventListener('DOMContentLoaded', () => {
     // Mobile Menu Toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -147,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.heroImage) {
                 const img = document.getElementById('hero-img');
                 img.src = data.heroImage;
-                img.style.opacity = '1';
+                img.classList.remove('bg-skeleton');
             }
         }
     }, err => console.log('Hero fetch:', err));
@@ -161,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.image) {
                 const img = document.getElementById('about-img');
                 img.src = data.image;
-                img.style.opacity = '1';
+                img.classList.remove('bg-skeleton');
             }
         }
     }, err => console.log('About fetch:', err));
@@ -289,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.image) {
                 const img = document.getElementById('dining-img');
                 img.src = data.image;
-                img.style.opacity = '1';
+                img.classList.remove('bg-skeleton');
             }
         }
     }, err => console.log('Dining fetch:', err));
@@ -482,6 +487,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const ftPhone = document.getElementById('ft-phone'); if(ftPhone && d.phone) ftPhone.textContent = `📞 ${d.phone}`;
             const mapBtn = document.getElementById('btn-directions'); if(mapBtn && d.mapsUrl) mapBtn.href = d.mapsUrl;
+
+            // Update Booking Links
+            if (d.booking_mmt) { const el = document.getElementById('link-mmt'); if(el) { el.href = d.booking_mmt; el.style.display = 'flex'; } }
+            if (d.booking_agoda) { const el = document.getElementById('link-agoda'); if(el) { el.href = d.booking_agoda; el.style.display = 'flex'; } }
+            if (d.booking_tripadvisor) { const el = document.getElementById('link-tripadvisor'); if(el) { el.href = d.booking_tripadvisor; el.style.display = 'flex'; } }
+            if (d.booking_goibibo) { const el = document.getElementById('link-goibibo'); if(el) { el.href = d.booking_goibibo; el.style.display = 'flex'; } }
         }
     });
 

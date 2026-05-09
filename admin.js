@@ -633,6 +633,10 @@ function loadSettings() {
     document.getElementById("set-instagram").value = d.instagram || '';
     document.getElementById("set-facebook").value = d.facebook || '';
     document.getElementById("set-maps").value = d.mapsUrl || '';
+    document.getElementById("set-book-mmt").value = d.booking_mmt || '';
+    document.getElementById("set-book-agoda").value = d.booking_agoda || '';
+    document.getElementById("set-book-tripadvisor").value = d.booking_tripadvisor || '';
+    document.getElementById("set-book-goibibo").value = d.booking_goibibo || '';
     document.getElementById("set-admin-emails").value = (d.adminEmails || ADMIN_EMAILS).join('\n');
   });
 }
@@ -647,6 +651,10 @@ document.getElementById("settings-form").addEventListener("submit", async e => {
       instagram: document.getElementById("set-instagram").value,
       facebook: document.getElementById("set-facebook").value,
       mapsUrl: document.getElementById("set-maps").value,
+      booking_mmt: document.getElementById("set-book-mmt").value,
+      booking_agoda: document.getElementById("set-book-agoda").value,
+      booking_tripadvisor: document.getElementById("set-book-tripadvisor").value,
+      booking_goibibo: document.getElementById("set-book-goibibo").value,
       adminEmails: emails.length ? emails : ADMIN_EMAILS
     };
     await db.collection("siteContent").doc("settings").set(payload, {merge:true});

@@ -29,7 +29,10 @@
         appId: "1:412496518341:web:acb05a67b6919a0494a4ac",
         measurementId: "G-7JDW4RMDLV"
       };
-      try { firebase.initializeApp(firebaseConfig); } catch(e) { console.error("Firebase init:", e); }
+      try { 
+        firebase.initializeApp(firebaseConfig); 
+        firebase.firestore().enablePersistence({synchronizeTabs:true}).catch(function(err) { console.warn("Firebase persistence error:", err); });
+      } catch(e) { console.error("Firebase init:", e); }
       var db = firebase.firestore();
     </script>
 
@@ -53,8 +56,7 @@
                 <a href="#location">Location</a>
             </nav>
             <div class="nav-actions">
-                <a href="https://wa.me/917432974293?text=Hello%2C%20I%20would%20like%20to%20book%20a%20stay%20at%20Sundar%20Hotel%20%26%20Resort."
-                    target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book Now <svg viewBox="0 0 24 24"
+                <a href="#book-online" class="btn btn-primary">Book Now <svg viewBox="0 0 24 24"
                         width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
                         stroke-linejoin="round" style="margin-left:5px;">
                         <path
@@ -74,7 +76,7 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-bg">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Sundar Resort Exterior in the mountains" class="parallax-img" id="hero-img" style="transition: opacity 0.5s ease; opacity: 0;">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Sundar Resort Exterior in the mountains" class="parallax-img bg-skeleton" id="hero-img">
             </div>
             <div class="hero-content">
                 <span class="badge reveal-up">Majitar, East Sikkim</span>
@@ -126,8 +128,8 @@
                     </div>
                 </div>
                 <div class="img-wrapper reveal-right" style="position: relative;">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="About Resort" class="rounded-img shadow-lg" id="about-img"
-                        style="width: 100%; height: 100%; object-fit: cover; min-height: 400px; transition: opacity 0.5s ease; opacity: 0;">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="About Resort" class="rounded-img shadow-lg bg-skeleton" id="about-img"
+                        style="width: 100%; height: 100%; object-fit: cover; min-height: 400px;">
                     <div class="floating-review-card">
                         <div class="stars">★★★★½</div>
                         <div class="rating-number">4.5<span>/5</span></div>
@@ -267,7 +269,7 @@
                         </svg></a>
                 </div>
                 <div class="img-wrapper reveal-right">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Delicious resort food" class="rounded-img shadow-lg" id="dining-img" style="transition: opacity 0.5s ease; opacity: 0;">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Delicious resort food" class="rounded-img shadow-lg bg-skeleton" id="dining-img">
                     <div style="background: white; padding: 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--primary); margin-top: 1.5rem;">
                         <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">Today's Specials</h3>
                         <ul style="list-style:none; padding:0;">
@@ -309,6 +311,38 @@
                 <h2 class="max-w-md mx-auto">Discover our exclusive packages</h2>
                 <div class="cards-grid reveal-up mt-5" id="offers-list">
                     <p>Loading offers from CMS...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Book Online Section -->
+        <section id="book-online" class="section py-large bg-dark text-white text-center">
+            <div class="container">
+                <span class="section-kicker text-primary-light reveal-up">Direct Reservations</span>
+                <h2 class="text-white reveal-up">Book Online</h2>
+                <p class="max-w-lg mx-auto mb-5 reveal-up" style="color: #ccc;">Choose your preferred platform to instantly book your stay at Sundar Hotel & Resort.</p>
+                
+                <div class="book-grid reveal-up">
+                    <a href="#" target="_blank" class="book-card" id="link-mmt" style="display:none;">
+                        <div class="book-icon" style="background: #e7e7e7; color: #d0112b;"><strong>MakeMyTrip</strong></div>
+                        <span class="book-text">Book on MakeMyTrip</span>
+                    </a>
+                    <a href="#" target="_blank" class="book-card" id="link-agoda" style="display:none;">
+                        <div class="book-icon" style="background: #e7e7e7; color: #0071c2;"><strong>Agoda</strong></div>
+                        <span class="book-text">Book on Agoda</span>
+                    </a>
+                    <a href="#" target="_blank" class="book-card" id="link-tripadvisor" style="display:none;">
+                        <div class="book-icon" style="background: #34e0a1; color: #000;"><strong>TripAdvisor</strong></div>
+                        <span class="book-text">Book on TripAdvisor</span>
+                    </a>
+                    <a href="#" target="_blank" class="book-card" id="link-goibibo" style="display:none;">
+                        <div class="book-icon" style="background: #e7e7e7; color: #ff6d38;"><strong>Goibibo</strong></div>
+                        <span class="book-text">Book on Goibibo</span>
+                    </a>
+                    <a href="https://wa.me/917432974293?text=Hello%2C%20I%20would%20like%20to%20book%20a%20stay%20at%20Sundar%20Hotel%20%26%20Resort." target="_blank" class="book-card" id="link-whatsapp">
+                        <div class="book-icon" style="background: #25D366; color: white;"><strong>WhatsApp</strong></div>
+                        <span class="book-text">Direct Booking</span>
+                    </a>
                 </div>
             </div>
         </section>
