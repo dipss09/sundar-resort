@@ -895,14 +895,33 @@ img {
    ==================== */
 @media (max-width: 768px) {
     .section {
-        padding: 4rem 0;
+        padding: 3rem 0;
     }
     .py-large {
-        padding: 4rem 0;
+        padding: 3rem 0;
     }
-    h1 { font-size: 2.5rem !important; }
-    h2 { font-size: 2rem !important; }
+    h1 { font-size: 2rem !important; margin-bottom: 1rem !important; }
+    h2 { font-size: 1.5rem !important; margin-bottom: 1rem !important; }
+    p { font-size: 0.95rem; }
     
+    .hero {
+        height: 60vh;
+        min-height: 400px;
+    }
+    
+    .hero-content {
+        margin-top: 4rem;
+        padding: 0 1rem;
+    }
+    
+    .hero-bg {
+        transform: none !important;
+    }
+    
+    .parallax-img {
+        height: 100%;
+    }
+
     .cards-grid, .gallery-grid, .auto-grid {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
@@ -910,10 +929,6 @@ img {
     
     .glass-card {
         padding: 1.5rem !important;
-    }
-    
-    .hero-content {
-        margin-top: 2rem;
     }
     
     .trust-banner {

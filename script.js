@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
         if (heroBg && scrolled < window.innerHeight) {
-            heroBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+            if (window.innerWidth > 768) {
+                heroBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+            } else {
+                heroBg.style.transform = 'none';
+            }
         }
     });
 
